@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140716063215) do
+ActiveRecord::Schema.define(:version => 20140716134628) do
 
   create_table "coaches", :force => true do |t|
     t.string   "nickname"
@@ -30,6 +30,8 @@ ActiveRecord::Schema.define(:version => 20140716063215) do
     t.boolean  "one_to_many_teaching", :default => true
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
+    t.string   "profession"
+    t.string   "experience"
   end
 
   add_index "coaches", ["email"], :name => "index_coaches_on_email", :unique => true
