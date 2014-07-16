@@ -11,10 +11,10 @@ class CreateCoaches < ActiveRecord::Migration
       t.string :password_digest
       t.string :remember_token
       t.string :organization
-      t.boolean :notification
-      t.boolean :open_question
-      t.boolean :one_to_one_teaching
-      t.boolean :one_to_many_teaching
+      t.boolean :notification, :default => true
+      t.boolean :open_question, :default => true
+      t.boolean :one_to_one_teaching, :default => true
+      t.boolean :one_to_many_teaching, :default => true
 
       t.timestamps
     end

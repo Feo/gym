@@ -24,12 +24,12 @@ ActiveRecord::Schema.define(:version => 20140716063215) do
     t.string   "password_digest"
     t.string   "remember_token"
     t.string   "organization"
-    t.boolean  "notification"
-    t.boolean  "open_question"
-    t.boolean  "one_to_one_teaching"
-    t.boolean  "one_to_many_teaching"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
+    t.boolean  "notification",         :default => true
+    t.boolean  "open_question",        :default => true
+    t.boolean  "one_to_one_teaching",  :default => true
+    t.boolean  "one_to_many_teaching", :default => true
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
   end
 
   add_index "coaches", ["email"], :name => "index_coaches_on_email", :unique => true
