@@ -31,6 +31,10 @@ module API
           end
         end
 
+        before do
+          authenticate!
+        end
+
         desc "Coach logout"
         post 'logout' do
           @coach = self.current_coach
@@ -52,11 +56,20 @@ module API
           end
         end
 
-        desc "Get coach information"
+        desc "Get current coach information"
         get 'info' do
           present current_coach
         end
 
+        desc "Get certain coach information with id"
+        get ':id/info' do
+          @coach = Coach.find_by_id(params[:id])
+          if @coach
+            present @coach
+          else
+            error!({"error" => "ID错误。" }, 400)
+          end
+        end
 
       end
     end

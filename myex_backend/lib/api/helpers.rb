@@ -20,5 +20,9 @@ module API
     def current_coach=(coach)
       @current_coach = coach
     end
+
+    def authenticate_coach!
+      error!('未登录。', 401) unless current_coach
+    end
   end
 end
