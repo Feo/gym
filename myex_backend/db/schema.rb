@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140728072530) do
+ActiveRecord::Schema.define(:version => 20140728080616) do
 
   create_table "coaches", :force => true do |t|
     t.string   "nickname"
@@ -58,7 +58,7 @@ ActiveRecord::Schema.define(:version => 20140728072530) do
     t.string   "remember_token"
     t.text     "sports"
     t.boolean  "have_coach",      :default => true
-    t.boolean  "coach_id"
+    t.integer  "coach_id"
     t.datetime "created_at",                        :null => false
     t.datetime "updated_at",                        :null => false
   end
