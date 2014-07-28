@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140728080616) do
+ActiveRecord::Schema.define(:version => 20140728081656) do
 
   create_table "coaches", :force => true do |t|
     t.string   "nickname"
@@ -57,10 +57,10 @@ ActiveRecord::Schema.define(:version => 20140728080616) do
     t.string   "password_digest"
     t.string   "remember_token"
     t.text     "sports"
-    t.boolean  "have_coach",      :default => true
+    t.boolean  "have_coach",      :default => false
     t.integer  "coach_id"
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
   add_index "members", ["email"], :name => "index_members_on_email", :unique => true
