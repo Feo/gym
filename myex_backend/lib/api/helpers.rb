@@ -4,10 +4,6 @@ module API
       @current_coach ||= Coach.find_by_remember_token(cookies[:remember_token])
     end
 
-    def authenticate!
-      error!('未登录。', 401) unless current_coach
-    end
-
     def sign_in_coach(coach)
       if params[:remember_me]
         cookies.permanent[:remember_token] = coach.remember_token
@@ -23,6 +19,27 @@ module API
 
     def authenticate_coach!
       error!('未登录。', 401) unless current_coach
+    end
+
+    def current_member
+      @current_member ||= Member.find_by_remember_token(cookies[:remember_token])
+    end
+
+    def sign_in_member(member)
+      if params[:remember_me]
+        cookies.permanent[:remember_token] = member.remember_token
+      else
+        cookies[:remember_token] = member.remember_token
+      end
+      self.current_member = member
+    end
+
+    def current_member=(member)
+      @current_member = member
+    end
+
+    def authenticate_member!
+      error!('未登录。', 401) unless current_member
     end
   end
 end

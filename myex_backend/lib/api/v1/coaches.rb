@@ -32,7 +32,7 @@ module API
         end
 
         before do
-          authenticate!
+          authenticate_coach!
         end
 
         desc "Coach logout"
