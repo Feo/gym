@@ -1,6 +1,7 @@
 class Member < ActiveRecord::Base
   attr_accessible :nickname, :name, :gender, :age, :profession, :province, :city, :district, :street, :phone, :email, :qq, :weixin, :password, :password_confirmation, :sports, :have_coach, :coach_id, :grade
   has_secure_password
+  serialize :sports
 
   before_save { |member| member.email = email.downcase }
   before_save :create_remember_token
