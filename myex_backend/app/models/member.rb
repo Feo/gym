@@ -1,8 +1,8 @@
-class Coach < ActiveRecord::Base
-  attr_accessible :nickname, :name, :province, :city, :district, :phone, :email, :organization, :notification, :open_question, :one_to_one_teaching, :one_to_many_teaching, :password, :password_confirmation, :profession, :experience, :street, :qq, :weixin, :grade
+class Member < ActiveRecord::Base
+  attr_accessible :nickname, :name, :gender, :age, :profession, :province, :city, :district, :street, :phone, :email, :qq, :weixin, :password, :password_confirmation, :sports, :have_coach, :coach_id, :grade
   has_secure_password
 
-  before_save { |coach| coach.email = email.downcase }
+  before_save { |member| member.email = email.downcase }
   before_save :create_remember_token
 
   validates :name, :presence => true, :length => { :maximum => 50 }
