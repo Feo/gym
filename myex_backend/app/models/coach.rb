@@ -1,5 +1,5 @@
 class Coach < ActiveRecord::Base
-  attr_accessible :nickname, :name, :province, :city, :district, :phone, :email, :organization, :notification, :open_question, :one_to_one_teaching, :one_to_many_teaching, :password, :password_confirmation, :profession, :experience
+  attr_accessible :nickname, :name, :province, :city, :district, :phone, :email, :organization, :notification, :open_question, :one_to_one_teaching, :one_to_many_teaching, :password, :password_confirmation, :profession, :experience, :street, :qq, :weixin, :grade
   has_secure_password
 
   before_save { |user| user.email = email.downcase }
