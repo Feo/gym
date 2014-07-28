@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140728081656) do
+ActiveRecord::Schema.define(:version => 20140728085753) do
 
   create_table "coaches", :force => true do |t|
     t.string   "nickname"
@@ -39,6 +39,24 @@ ActiveRecord::Schema.define(:version => 20140728081656) do
   end
 
   add_index "coaches", ["email"], :name => "index_coaches_on_email", :unique => true
+
+  create_table "member_habits", :force => true do |t|
+    t.integer  "member_id"
+    t.boolean  "smoking"
+    t.integer  "smoking_times"
+    t.boolean  "drinking"
+    t.integer  "drinking_times"
+    t.boolean  "drug"
+    t.text     "drug_name"
+    t.text     "drug_reason"
+    t.text     "disease_history"
+    t.float    "sleep_amount"
+    t.datetime "sleep_time"
+    t.string   "sleep_quality"
+    t.string   "self_assessment"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
 
   create_table "members", :force => true do |t|
     t.string   "nickname"
