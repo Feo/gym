@@ -71,6 +71,53 @@ module API
           end
         end
 
+        desc "Find coaches information"
+        post 'find_coach' do
+          age_less = params[:coach][:age_less] || ""
+          if age_less.empty?
+            age_less = 100
+          end
+          experience_less = params[:coach][:experience_less] || ""
+          if experience_less.empty?
+            experience_less = 100
+          end
+          grade_less = params[:coach][:grade_less] || ""
+          if grade_less.empty?
+            grade_less = 100
+          end
+          @coaches = Coach.where("nickname like ?
+                                                    AND name like ?
+                                                    AND province like ?
+                                                    AND city like ?
+                                                    AND district like ?
+                                                    AND street like ?
+                                                    AND email like ?
+                                                    AND gender like ?
+                                                    AND profession like ?
+                                                    AND age >= ?
+                                                    AND age <= ?
+                                                    AND experience >= ?
+                                                    AND experience <= ?
+                                                    AND grade >= ?
+                                                    AND grade <= ?",
+                                                    "%#{params[:coach][:nickname]}%",
+                                                    "%#{params[:coach][:name]}%",
+                                                    "%#{params[:coach][:province]}%",
+                                                   "%#{params[:coach][:city]}%",
+                                                   "%#{params[:coach][:district]}%",
+                                                   "%#{params[:coach][:street]}%",
+                                                   "%#{params[:coach][:email]}%",
+                                                   "%#{params[:coach][:gender]}%",
+                                                   "%#{params[:coach][:profession]}%",
+                                                   "#{params[:coach][:age_greater]}",
+                                                   age_less,
+                                                   "#{params[:coach][:experience_greater]}",
+                                                   experience_less,
+                                                   "#{params[:coach][:grade_greater]}",
+                                                   grade_less)
+          present @coaches
+        end
+
       end
     end
   end

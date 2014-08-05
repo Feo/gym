@@ -11,33 +11,33 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140805071901) do
+ActiveRecord::Schema.define(:version => 20140805091440) do
 
   create_table "coaches", :force => true do |t|
-    t.string   "nickname"
-    t.string   "name"
-    t.string   "province"
-    t.string   "city"
-    t.string   "district"
+    t.string   "nickname",             :default => ""
+    t.string   "name",                 :default => ""
+    t.string   "province",             :default => ""
+    t.string   "city",                 :default => ""
+    t.string   "district",             :default => ""
     t.string   "phone"
-    t.string   "email"
+    t.string   "email",                :default => ""
     t.string   "password_digest"
     t.string   "remember_token"
-    t.string   "organization"
+    t.string   "organization",         :default => ""
     t.boolean  "notification",         :default => true
     t.boolean  "open_question",        :default => true
     t.boolean  "one_to_one_teaching",  :default => true
     t.boolean  "one_to_many_teaching", :default => true
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
-    t.string   "profession"
-    t.string   "experience"
-    t.string   "street"
-    t.string   "qq"
-    t.string   "weixin"
-    t.float    "grade"
-    t.string   "age"
-    t.string   "gender"
+    t.string   "profession",           :default => ""
+    t.integer  "experience",           :default => 0
+    t.string   "street",               :default => ""
+    t.string   "qq",                   :default => ""
+    t.string   "weixin",               :default => ""
+    t.float    "grade",                :default => 0.0
+    t.integer  "age",                  :default => 0
+    t.string   "gender",               :default => ""
   end
 
   add_index "coaches", ["email"], :name => "index_coaches_on_email", :unique => true
@@ -64,7 +64,7 @@ ActiveRecord::Schema.define(:version => 20140805071901) do
     t.string   "nickname"
     t.string   "name"
     t.string   "gender"
-    t.string   "age"
+    t.integer  "age"
     t.string   "profession"
     t.string   "province"
     t.string   "city"
