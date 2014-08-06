@@ -120,6 +120,44 @@ module API
           present @coaches
         end
 
+        desc "Apply a private coach"
+        post 'apply_coach' do
+          @coach = Coach.find_by_id(params[:id])
+          @member = current_member
+          if @member.have_coach
+            error!({"error" => "会员已有私教。" }, 400)
+          elsif @coach
+            @member.update_attributes(coach_id:params[:id])
+            sign_in_member @member
+            present @member
+          else
+            error!({"error" => "教练ID错误。" }, 400)
+          end
+        end
+
+        desc "Delete the current private coach"
+        post 'delete_coach' do
+          @member = current_member
+          if !@member.have_coach
+            error!({"error" => "会员没有关联的私教。" }, 400)
+          else
+            @member.update_attributes(coach_id:nil, have_coach:false)
+            sign_in_member @member
+            present @member
+          end
+        end
+
+        desc "Get the current private coach information"
+        get 'coach_info' do
+          @member = current_member
+          if @member.have_coach
+            @coach = Coach.find_by_id(@member.coach_id)
+            present @coach
+          else
+            error!({"error" => "会员没有关联的私教。" }, 400)
+          end
+        end
+
       end
     end
   end

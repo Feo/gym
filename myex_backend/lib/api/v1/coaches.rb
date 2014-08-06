@@ -71,6 +71,49 @@ module API
           end
         end
 
+        desc "Get apply member list"
+        get 'apply_list' do
+          @members = Member.where("coach_id = ? AND have_coach = ?", current_coach.id, false)
+        end
+
+        desc "Get related member list"
+        get 'related_list' do
+          @members = Member.where("coach_id = ? AND have_coach = ?", current_coach.id, true)
+        end
+
+        desc "Approve member's coach apply."
+        post 'approve_apply' do
+          @member = Member.where("coach_id = ? AND have_coach = ? AND id = ?", current_coach.id, false, params[:id]).first
+          if @member
+            @member.update_attributes(have_coach:true)
+            present @member
+          else
+            error!({"error" => "ID错误。" }, 400)
+          end
+        end
+
+        desc "Refuse member's coach apply."
+        post 'refuse_apply' do
+          @member = Member.where("coach_id = ? AND have_coach = ? AND id = ?", current_coach.id, false, params[:id]).first
+          if @member
+            @member.update_attributes(coach_id:nil)
+            present @member
+          else
+            error!({"error" => "ID错误。" }, 400)
+          end
+        end
+
+        desc "Delete related member."
+        post 'delete_member' do
+          @member = Member.where("coach_id = ? AND have_coach = ? AND id = ?", current_coach.id, true, params[:id]).first
+          if @member
+            @member.update_attributes(coach_id:nil, have_coach:false)
+            present @member
+          else
+            error!({"error" => "ID错误。" }, 400)
+          end
+        end
+
       end
     end
   end
