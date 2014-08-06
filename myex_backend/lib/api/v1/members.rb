@@ -94,6 +94,7 @@ module API
                                                     AND email like ?
                                                     AND gender like ?
                                                     AND profession like ?
+                                                    AND organization like ?
                                                     AND age >= ?
                                                     AND age <= ?
                                                     AND experience >= ?
@@ -109,6 +110,7 @@ module API
                                                    "%#{params[:coach][:email]}%",
                                                    "%#{params[:coach][:gender]}%",
                                                    "%#{params[:coach][:profession]}%",
+                                                   "%#{params[:coach][:organization]}%",
                                                    "#{params[:coach][:age_greater]}",
                                                    age_less,
                                                    "#{params[:coach][:experience_greater]}",
