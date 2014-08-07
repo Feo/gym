@@ -69,5 +69,9 @@ module MyexBackend
     config.paths.add "app/api", glob: "**/*.rb"
     config.autoload_paths += Dir["#{Rails.root}/app/api/*"]
     config.autoload_paths += Dir["#{Rails.root}/lib/**/"]
+
+    # Set time zone to 'Beijing'
+    config.active_record.default_timezone = :local
+    config.time_zone = 'Beijing'
   end
 end
