@@ -141,7 +141,7 @@ module API
           if !@member.have_coach
             error!({"error" => "会员没有关联的私教。" }, 400)
           else
-            @member.update_attributes(coach_id:nil, have_coach:false)
+            @member.update_attributes(coach_id:nil, have_coach:false, grade:nil, grade_time:nil)
             sign_in_member @member
             present @member
           end
@@ -155,6 +155,27 @@ module API
             present @coach
           else
             error!({"error" => "会员没有关联的私教。" }, 400)
+          end
+        end
+
+        desc "Grading the current private coach"
+        post 'grade_coach' do
+          @member = current_member
+          if !@member.have_coach
+            error!({"error" => "会员没有关联的私教。" }, 400)
+          elsif @member.grade_time && Time.now - @member.grade_time < 1.month
+            error!({"error" => "一个月内只能修改一次。" }, 400)
+          else
+            @member.update_attributes(grade:params[:grade], grade_time:Time.now)
+            @members = Member.where("have_coach = ? AND coach_id = ? AND grade is not null", true, @member.coach_id)
+            total_grade = 0
+            @members.each do |member|
+              total_grade = total_grade + member.grade
+            end
+            @coach = Coach.find_by_id(@member.coach_id)
+            @coach.update_attributes(grade:((total_grade/@members.count).round(1)))
+            sign_in_member @member
+            present [@member, @coach]
           end
         end
 
