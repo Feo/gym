@@ -54,6 +54,19 @@ module API
           end
         end
 
+        desc "change member password"
+        post 'change_pwd' do
+          @member = current_member
+          if params[:member][:password].nil? || params[:member][:password] != params[:member][:password_confirmation]
+            error!({"error" => "密码修改错误。" }, 400)
+          elsif @member.update_attributes(params[:member])
+            sign_in_member @member
+            present @member
+          else
+            error!({"error" => "密码修改错误。" }, 400)
+          end
+        end
+
         desc "Get current member information"
         get 'info' do
           present current_member
