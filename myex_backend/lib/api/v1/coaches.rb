@@ -46,9 +46,7 @@ module API
         desc "Update coach information"
         post 'update' do
           @coach = current_coach
-          if params[:coach][:password] != params[:coach][:password_confirmation]
-            error!({"error" => "确认密码错误。" }, 400)
-          elsif @coach.update_attributes(params[:coach].slice(params[:coach][:email]))
+          if @coach.update_attributes(params[:coach].slice(params[:coach][:email], params[:coach][:password], params[:coach][:password_confirmation]))
             sign_in_coach @coach
             present @coach
           else

@@ -46,9 +46,7 @@ module API
         desc "Update member information"
         post 'update' do
           @member = current_member
-          if params[:member][:password] != params[:member][:password_confirmation]
-            error!({"error" => "确认密码错误。" }, 400)
-          elsif @member.update_attributes(params[:member].slice(params[:member][:email]))
+          if @member.update_attributes(params[:member].slice(params[:member][:email], params[:member][:password], params[:member][:password_confirmation]))
             sign_in_member @member
             present @member
           else
