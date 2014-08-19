@@ -57,7 +57,7 @@ module API
         desc "change coach password"
         post 'change_pwd' do
           @coach = current_coach
-          if params[:coach][:password].nil? || params[:coach][:password] != params[:coach][:password_confirmation]
+          if params[:coach][:password].empty? || params[:coach][:password] != params[:coach][:password_confirmation]
             error!({"error" => "密码修改错误。" }, 400)
           elsif @coach.update_attributes(params[:member])
             sign_in_coach @coach
