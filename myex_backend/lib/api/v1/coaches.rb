@@ -48,7 +48,7 @@ module API
           @coach = current_coach
           if params[:coach][:password] != params[:coach][:password_confirmation]
             error!({"error" => "确认密码错误。" }, 400)
-          elsif @coach.update_attributes(params[:coach])
+          elsif @coach.update_attributes(params[:coach].slice(params[:coach][:email]))
             sign_in_coach @coach
             present @coach
           else

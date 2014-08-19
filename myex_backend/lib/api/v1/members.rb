@@ -48,7 +48,7 @@ module API
           @member = current_member
           if params[:member][:password] != params[:member][:password_confirmation]
             error!({"error" => "确认密码错误。" }, 400)
-          elsif @member.update_attributes(params[:member])
+          elsif @member.update_attributes(params[:member].slice(params[:member][:email]))
             sign_in_member @member
             present @member
           else
