@@ -38,7 +38,7 @@ module API
           elsif @habit.delete
             present @habit
           else
-            error!({"error" => "修改生活健康习惯表失败。", "status" => "f" }, 400)
+            error!({"error" => "删除生活健康习惯表失败。", "status" => "f" }, 400)
           end
         end
 
