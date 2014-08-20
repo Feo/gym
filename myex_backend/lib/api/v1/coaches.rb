@@ -9,12 +9,12 @@ module API
         post 'register' do
           @coach = Coach.new(params[:coach])
           if !Coach.find_by_email(params[:coach][:email]).nil?
-            error!({"error" => "该邮箱已被使用，请重新输入。" }, 400)
+            error!({"error" => "该邮箱已被使用，请重新输入。", "status" => "f" }, 400)
           elsif @coach.save
             sign_in_coach @coach
             present @coach
           else
-            error!({"error" => "注册失败。" }, 400)
+            error!({"error" => "注册失败。", "status" => "f" }, 400)
           end
         end
 
@@ -25,7 +25,7 @@ module API
             sign_in_coach @coach
             present @coach
           else
-            error!({"error" => "邮箱或密码错误。" }, 400)
+            error!({"error" => "邮箱或密码错误。", "status" => "f" }, 400)
           end
         end
 
@@ -48,7 +48,7 @@ module API
             sign_in_coach @coach
             present @coach
           else
-            error!({"error" => "修改教练信息不成功。" }, 400)
+            error!({"error" => "修改教练信息不成功。", "status" => "f" }, 400)
           end
         end
 
@@ -61,7 +61,7 @@ module API
             sign_in_coach @coach
             present @coach
           else
-            error!({"error" => "密码修改错误。" }, 400)
+            error!({"error" => "密码修改错误。", "status" => "f" }, 400)
           end
         end
 
@@ -76,7 +76,7 @@ module API
           if @coach
             present @coach
           else
-            error!({"error" => "ID错误。" }, 400)
+            error!({"error" => "ID错误。", "status" => "f" }, 400)
           end
         end
 
@@ -97,7 +97,7 @@ module API
             @member.update_attributes(have_coach:true)
             present @member
           else
-            error!({"error" => "ID错误。" }, 400)
+            error!({"error" => "ID错误。", "status" => "f" }, 400)
           end
         end
 
@@ -108,7 +108,7 @@ module API
             @member.update_attributes(coach_id:nil)
             present @member
           else
-            error!({"error" => "ID错误。" }, 400)
+            error!({"error" => "ID错误。", "status" => "f" }, 400)
           end
         end
 
@@ -119,7 +119,7 @@ module API
             @member.update_attributes(coach_id:nil, have_coach:false)
             present @member
           else
-            error!({"error" => "ID错误。" }, 400)
+            error!({"error" => "ID错误。", "status" => "f" }, 400)
           end
         end
 

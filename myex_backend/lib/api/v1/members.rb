@@ -9,12 +9,12 @@ module API
         post 'register' do
           @member = Member.new(params[:member])
           if !Member.find_by_email(params[:member][:email]).nil?
-            error!({"error" => "该邮箱已被使用，请重新输入。" }, 400)
+            error!({"error" => "该邮箱已被使用，请重新输入。", "status" => "f" }, 400)
           elsif @member.save
             sign_in_member @member
             present @member
           else
-            error!({"error" => "注册失败。" }, 400)
+            error!({"error" => "注册失败。", "status" => "f" }, 400)
           end
         end
 
@@ -25,7 +25,7 @@ module API
             sign_in_member @member
             present @member
           else
-            error!({"error" => "邮箱或密码错误。" }, 400)
+            error!({"error" => "邮箱或密码错误。", "status" => "f" }, 400)
           end
         end
 
@@ -48,7 +48,7 @@ module API
             sign_in_member @member
             present @member
           else
-            error!({"error" => "修改会员信息不成功。" }, 400)
+            error!({"error" => "修改会员信息不成功。", "status" => "f" }, 400)
           end
         end
 
@@ -56,12 +56,12 @@ module API
         post 'change_pwd' do
           @member = current_member
           if params[:member][:password].empty? || params[:member][:password] != params[:member][:password_confirmation]
-            error!({"error" => "密码修改错误。" }, 400)
+            error!({"error" => "密码修改错误。", "status" => "f" }, 400)
           elsif @member.update_attributes(params[:member])
             sign_in_member @member
             present @member
           else
-            error!({"error" => "密码修改错误。" }, 400)
+            error!({"error" => "密码修改错误。", "status" => "f" }, 400)
           end
         end
 
@@ -76,7 +76,7 @@ module API
           if @member
             present @member
           else
-            error!({"error" => "ID错误。" }, 400)
+            error!({"error" => "ID错误。", "status" => "f" }, 400)
           end
         end
 
@@ -134,13 +134,13 @@ module API
           @coach = Coach.find_by_id(params[:id])
           @member = current_member
           if @member.have_coach
-            error!({"error" => "会员已有私教。" }, 400)
+            error!({"error" => "会员已有私教。", "status" => "f" }, 400)
           elsif @coach
             @member.update_attributes(coach_id:params[:id])
             sign_in_member @member
             present @member
           else
-            error!({"error" => "教练ID错误。" }, 400)
+            error!({"error" => "教练ID错误。", "status" => "f" }, 400)
           end
         end
 
@@ -148,7 +148,7 @@ module API
         post 'delete_coach' do
           @member = current_member
           if !@member.have_coach
-            error!({"error" => "会员没有关联的私教。" }, 400)
+            error!({"error" => "会员没有关联的私教。", "status" => "f" }, 400)
           else
             @member.update_attributes(coach_id:nil, have_coach:false, grade:nil, grade_time:nil)
             sign_in_member @member
@@ -163,7 +163,7 @@ module API
             @coach = Coach.find_by_id(@member.coach_id)
             present @coach
           else
-            error!({"error" => "会员没有关联的私教。" }, 400)
+            error!({"error" => "会员没有关联的私教。", "status" => "f" }, 400)
           end
         end
 
@@ -171,9 +171,9 @@ module API
         post 'grade_coach' do
           @member = current_member
           if !@member.have_coach
-            error!({"error" => "会员没有关联的私教。" }, 400)
+            error!({"error" => "会员没有关联的私教。", "status" => "f" }, 400)
           elsif @member.grade_time && Time.now - @member.grade_time < 1.month
-            error!({"error" => "一个月内只能修改一次。" }, 400)
+            error!({"error" => "一个月内只能修改一次。", "status" => "f" }, 400)
           else
             @member.update_attributes(grade:params[:grade], grade_time:Time.now)
             @members = Member.where("have_coach = ? AND coach_id = ? AND grade is not null", true, @member.coach_id)
