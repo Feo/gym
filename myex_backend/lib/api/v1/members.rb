@@ -157,13 +157,23 @@ module API
         end
 
         desc "Get the current private coach information"
-        get 'coach_info' do
+        get 'current_coach' do
           @member = current_member
           if @member.have_coach
             @coach = Coach.find_by_id(@member.coach_id)
             present @coach
           else
             error!({"error" => "会员没有关联的私教。", "status" => "f" }, 400)
+          end
+        end
+
+        desc "Get the coach information"
+        post 'coach_info' do
+          @coach = Coach.find_by_id(params[:id])
+          if @coach
+            present @coach
+          else
+            error!({"error" => "教练ID错误。", "status" => "f" }, 400)
           end
         end
 
