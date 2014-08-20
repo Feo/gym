@@ -21,9 +21,7 @@ module API
         desc "Member login"
         post 'login' do
           @member = Member.find_by_email(params[:session][:email].downcase)
-          if params[:session][:password] != params[:session][:password_confirmation]
-            error!({"error" => "邮箱或密码错误。" }, 400)
-          elsif @member && @member.authenticate(params[:session][:password])
+          if @member && @member.authenticate(params[:session][:password])
             sign_in_member @member
             present @member
           else

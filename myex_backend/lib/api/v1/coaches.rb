@@ -21,9 +21,7 @@ module API
         desc "Coach login"
         post 'login' do
           @coach = Coach.find_by_email(params[:session][:email].downcase)
-          if params[:session][:password] != params[:session][:password_confirmation]
-            error!({"error" => "邮箱或密码错误。" }, 400)
-          elsif @coach && @coach.authenticate(params[:session][:password])
+          if @coach && @coach.authenticate(params[:session][:password])
             sign_in_coach @coach
             present @coach
           else
