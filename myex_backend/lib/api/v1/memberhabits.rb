@@ -5,6 +5,10 @@ module API
       format :json
 
       resource :memberhabits do
+
+        before do
+          authenticate_member!
+        end
         
         desc "Create  member habit table."
         post 'create' do
