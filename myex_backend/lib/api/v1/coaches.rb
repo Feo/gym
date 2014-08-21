@@ -44,7 +44,7 @@ module API
         desc "Update coach information"
         post 'update' do
           @coach = current_coach
-          if @coach.update_attributes(params[:coach].slice(params[:coach][:email], params[:coach][:password], params[:coach][:password_confirmation]))
+          if @coach.update_attributes(params[:coach].except(:email, :password, :password_confirmation))
             sign_in_coach @coach
             present @coach
           else

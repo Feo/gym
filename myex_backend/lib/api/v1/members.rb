@@ -44,7 +44,7 @@ module API
         desc "Update member information"
         post 'update' do
           @member = current_member
-          if @member.update_attributes(params[:member].slice(params[:member][:email], params[:member][:password], params[:member][:password_confirmation]))
+          if @member.update_attributes(params[:member].except(:email, :password, :password_confirmation))
             sign_in_member @member
             present @member
           else

@@ -13,9 +13,9 @@ module API
         desc "Create  member habit table."
         post 'create' do
           @habit = MemberHabit.new(params[:habit])
-          if !params[:habit][:member_id].empty? && !MemberHabit.find_by_member_id(params[:habit][:member_id]).nil?
+          if !MemberHabit.find_by_member_id(current_member.id).nil?
             error!({"error" => "该会员已创建生活健康习惯表。", "status" => "f" }, 400)
-          elsif @habit.save
+          elsif @habit.save && @habit.update_attributes(member_id:current_member.id)
             present @habit
           else
             error!({"error" => "创建生活健康习惯表失败。", "status" => "f" }, 400)
@@ -24,10 +24,10 @@ module API
 
         desc "Update  member habit table."
         post 'update' do
-          @habit = MemberHabit.find_by_member_id(params[:habit][:member_id])
+          @habit = MemberHabit.find_by_member_id(current_member.id)
           if !@habit
             error!({"error" => "改会员生活健康习惯表不存在。", "status" => "f" }, 400)
-          elsif @habit.update_attributes(params[:habit])
+          elsif @habit.update_attributes(params[:habit].except(:member_id))
             present @habit
           else
             error!({"error" => "修改生活健康习惯表失败。", "status" => "f" }, 400)
@@ -36,7 +36,7 @@ module API
 
         desc "Delete  member habit table."
         post 'delete' do
-          @habit = MemberHabit.find_by_member_id(params[:habit][:member_id])
+          @habit = MemberHabit.find_by_member_id(current_member.id)
           if !@habit
             error!({"error" => "改会员生活健康习惯表不存在。", "status" => "f" }, 400)
           elsif @habit.delete
