@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140825072828) do
+ActiveRecord::Schema.define(:version => 20140825090737) do
 
   create_table "coaches", :force => true do |t|
     t.string   "nickname",             :default => ""
@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(:version => 20140825072828) do
     t.boolean  "open_question",        :default => true
     t.boolean  "one_to_one_teaching",  :default => true
     t.boolean  "one_to_many_teaching", :default => true
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
     t.string   "profession",           :default => ""
     t.integer  "experience",           :default => 0
     t.string   "street",               :default => ""
@@ -38,9 +38,9 @@ ActiveRecord::Schema.define(:version => 20140825072828) do
     t.float    "grade",                :default => 0.0
     t.integer  "age",                  :default => 0
     t.string   "gender",               :default => ""
+    t.string   "token"
+    t.boolean  "activated",            :default => false
   end
-
-  add_index "coaches", ["email"], :name => "index_coaches_on_email", :unique => true
 
   create_table "member_habits", :force => true do |t|
     t.integer  "member_id"
@@ -86,7 +86,5 @@ ActiveRecord::Schema.define(:version => 20140825072828) do
     t.string   "token"
     t.boolean  "activated",       :default => false
   end
-
-  add_index "members", ["email"], :name => "index_members_on_email", :unique => true
 
 end
