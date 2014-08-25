@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140807025742) do
+ActiveRecord::Schema.define(:version => 20140825072828) do
 
   create_table "coaches", :force => true do |t|
     t.string   "nickname",             :default => ""
@@ -83,6 +83,8 @@ ActiveRecord::Schema.define(:version => 20140807025742) do
     t.datetime "updated_at",                         :null => false
     t.float    "grade"
     t.datetime "grade_time"
+    t.string   "token"
+    t.boolean  "activated",       :default => false
   end
 
   add_index "members", ["email"], :name => "index_members_on_email", :unique => true

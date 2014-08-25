@@ -8,24 +8,73 @@ module API
         desc "Register a new member"
         post 'register' do
           @member = Member.new(params[:member])
-          if !Member.find_by_email(params[:member][:email]).nil?
-            error!({"error" => "该邮箱已被使用，请重新输入。", "status" => "f" }, 400)
-          elsif @member.save
-            sign_in_member @member
+          if !Member.find_by_phone(params[:member][:phone]).nil?
+            error!({"error" => "该号码已被使用，请重新输入。", "status" => "f" }, 400)
+         elsif !params[:member][:phone].empty? && @member.save
+            rand = rand(999999)
+            content = "51练激活码：" + rand.to_s
+            username = I18n.t('.smsbao.config.username')
+            password = I18n.t('.smsbao.config.password')
+            uri = URI('http://www.smsbao.com/sms')
+            res = Net::HTTP.post_form(uri, 'u' => username, 'p' => password, 'm' => @member.phone, 'c' => content )
+            @member.update_attributes(token:rand)
             present @member
           else
             error!({"error" => "注册失败。", "status" => "f" }, 400)
           end
         end
 
-        desc "Member login"
-        post 'login' do
-          @member = Member.find_by_email(params[:session][:email].downcase)
-          if @member && @member.authenticate(params[:session][:password])
-            sign_in_member @member
+        # old register
+        # post 'register' do
+        #   @member = Member.new(params[:member])
+        #   if !Member.find_by_email(params[:member][:email]).nil?
+        #     error!({"error" => "该邮箱已被使用，请重新输入。", "status" => "f" }, 400)
+        #   elsif @member.save
+        #     sign_in_member @member
+        #     present @member
+        #   else
+        #     error!({"error" => "注册失败。", "status" => "f" }, 400)
+        #   end
+        # end
+
+        desc "Send activated token"
+        post 'send_token' do
+          @member = Member.find_by_phone(params[:member][:phone])
+          if !@member.nil?
+            rand = rand(999999)
+            content = "51练激活码：" + rand.to_s
+            username = I18n.t('.smsbao.config.username')
+            password = I18n.t('.smsbao.config.password')
+            uri = URI('http://www.smsbao.com/sms')
+            res = Net::HTTP.post_form(uri, 'u' => username, 'p' => password, 'm' => @member.phone, 'c' => content )
+            @member.update_attributes(token:rand)
             present @member
           else
-            error!({"error" => "邮箱或密码错误。", "status" => "f" }, 400)
+            error!({"error" => "该手机号未注册。", "status" => "f" }, 400)
+          end
+        end
+
+        desc "Activate account"
+        post 'activate_account' do
+          @member = Member.find_by_phone(params[:member][:phone])
+          if !@member.nil? && @member.token == params[:member][:token]
+            @member.update_attributes(activated:true)
+            present @member
+          else
+            error!({"error" => "激活账户失败。", "status" => "f" }, 400)
+          end
+        end
+
+        desc "Member login"
+        post 'login' do
+          @member = Member.find_by_phone(params[:session][:phone])
+          if @member && @member.authenticate(params[:session][:password]) && @member.activated
+            sign_in_member @member
+            present @member
+          elsif @member && @member.authenticate(params[:session][:password]) && !@member.activated
+            error!({"error" => "账户未激活。", "status" => "f" }, 400)
+          else
+            error!({"error" => "手机或密码错误。", "status" => "f" }, 400)
           end
         end
 
@@ -44,7 +93,7 @@ module API
         desc "Update member information"
         post 'update' do
           @member = current_member
-          if @member.update_attributes(params[:member].except(:email, :password, :password_confirmation))
+          if @member.update_attributes(params[:member].except(:password, :password_confirmation))
             sign_in_member @member
             present @member
           else
