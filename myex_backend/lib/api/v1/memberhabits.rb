@@ -9,6 +9,16 @@ module API
         before do
           authenticate_member!
         end
+
+        desc "Get member habit table."
+        get ':id/habit' do
+          @habit = MemberHabit.find_by_member_id(params[:id])
+          if !@habit
+            error!({"error" => "改会员生活健康习惯表不存在。", "status" => "f" }, 400)
+          else
+            present @habit
+          end
+        end
         
         desc "Create  member habit table."
         post 'create' do
