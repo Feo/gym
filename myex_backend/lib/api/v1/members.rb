@@ -8,7 +8,7 @@ module API
         desc "Register a new member"
         post 'register' do
           @member = Member.new(params[:member])
-          if !Member.find_by_phone(params[:member][:phone]).nil?
+          if !Member.find_by_phone(params[:member][:phone]).nil? || !Coach.find_by_phone(params[:member][:phone]).nil?
             error!({"error" => "该号码已被使用，请重新输入。", "status" => "f" }, 400)
          elsif !params[:member][:phone].empty? && @member.save
             rand = rand(999999)
