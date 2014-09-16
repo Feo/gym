@@ -57,7 +57,7 @@ module API
           @coach = Coach.find_by_phone(params[:session][:phone])
           if @coach && @coach.authenticate(params[:session][:password]) && @coach.activated
             sign_in_coach @coach
-            present @coach
+            present [@coach, cookies]
           elsif @coach && @coach.authenticate(params[:session][:password]) && !@coach.activated
             error!({"error" => "账户未激活。", "status" => "f" }, 400)
           else
