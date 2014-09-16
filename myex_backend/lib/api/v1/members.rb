@@ -70,7 +70,7 @@ module API
           @member = Member.find_by_phone(params[:session][:phone])
           if @member && @member.authenticate(params[:session][:password]) && @member.activated
             sign_in_member @member
-            present [@member, cookies]
+            present @member
           elsif @member && @member.authenticate(params[:session][:password]) && !@member.activated
             error!({"error" => "账户未激活。", "status" => "f" }, 400)
           else
