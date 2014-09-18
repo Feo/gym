@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140825090737) do
+ActiveRecord::Schema.define(:version => 20140917063100) do
 
   create_table "coaches", :force => true do |t|
     t.string   "nickname",             :default => ""
@@ -40,6 +40,22 @@ ActiveRecord::Schema.define(:version => 20140825090737) do
     t.string   "gender",               :default => ""
     t.string   "token"
     t.boolean  "activated",            :default => false
+  end
+
+  create_table "events", :force => true do |t|
+    t.string   "content",         :default => ""
+    t.string   "week",            :default => ""
+    t.boolean  "whether_weekly",  :default => false
+    t.string   "date",            :default => ""
+    t.string   "time",            :default => ""
+    t.string   "begin_date",      :default => ""
+    t.string   "end_date",        :default => ""
+    t.integer  "coach_id"
+    t.string   "member_phone",    :default => ""
+    t.boolean  "coach_approved",  :default => false
+    t.string   "member_approved", :default => ""
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
   end
 
   create_table "member_habits", :force => true do |t|
