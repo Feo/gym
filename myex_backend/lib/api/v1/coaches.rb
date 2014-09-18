@@ -52,6 +52,20 @@ module API
           end
         end
 
+        desc "Reset password"
+        post 'reset_password' do
+          @coach = Coach.find_by_phone(params[:phone])
+          if @coach.try(:token) != params[:token]
+            error!({"error" => "手机号码或验证码错误。", "status" => "f" }, 400)
+          elsif params[:password].empty? || params[:password] != params[:password_confirmation]
+            error!({"error" => "密码修改错误。", "status" => "f" }, 400)
+          elsif @coach.update_attributes(password:params[:password], password_confirmation:params[:password_confirmation])
+            present @coach
+          else
+            error!({"error" => "密码修改错误。", "status" => "f" }, 400)
+          end
+        end
+
         desc "Coach login"
         post 'login' do
           @coach = Coach.find_by_phone(params[:session][:phone])
@@ -124,6 +138,7 @@ module API
         desc "Get related member list"
         get 'related_list' do
           @members = Member.where("coach_id = ? AND have_coach = ?", current_coach.id, true)
+          []
         end
 
         desc "Approve member's coach apply."

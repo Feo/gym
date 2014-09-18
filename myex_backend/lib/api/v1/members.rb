@@ -65,6 +65,20 @@ module API
           end
         end
 
+        desc "Reset password"
+        post 'reset_password' do
+          @member = Member.find_by_phone(params[:phone])
+          if @member.try(:token) != params[:token]
+            error!({"error" => "手机号码或验证码错误。", "status" => "f" }, 400)
+          elsif params[:password].empty? || params[:password] != params[:password_confirmation]
+            error!({"error" => "密码修改错误。", "status" => "f" }, 400)
+          elsif @member.update_attributes(password:params[:password], password_confirmation:params[:password_confirmation])
+            present @member
+          else
+            error!({"error" => "密码修改错误。", "status" => "f" }, 400)
+          end
+        end
+
         desc "Member login"
         post 'login' do
           @member = Member.find_by_phone(params[:session][:phone])
@@ -246,6 +260,8 @@ module API
             present [@member, @coach]
           end
         end
+
+        
 
       end
     end
