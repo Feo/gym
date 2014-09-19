@@ -13,8 +13,20 @@ module API
         desc "Coach create  a event."
         post 'coach_create' do
           @event = Event.new(params[:event])
+          @conflict = false
           if @event.update_attributes(coach_id:current_coach.id, coach_approved:true)
-            present @event
+            if @event.whether_weekly
+              @event.week.split(";").each do |week|
+                if Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND week like ?  AND coach_id = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{week}%", current_coach.id).count > 1
+                  @conflict = true
+                end
+              end
+            elsif !@event.whether_weekly && !Event.where("week like ? AND time = ? AND begin_date <= ? AND end_date >= ? AND coach_id = ?", "%#{@event.day}%", @event.time, @event.date, @event.date, current_coach.id).empty?
+              @conflict = true
+            elsif !@event.whether_weekly && Event.where("date = ? AND time = ? AND coach_id = ?", @event.date, @event.time, current_coach.id).count > 1
+              @conflict = true
+            end
+            present [@event, "conflict" => @conflict]
           else
             error!({"error" => "创建日程失败。", "status" => "f" }, 400)
           end
@@ -23,12 +35,25 @@ module API
         desc "Member approve the event"
         post 'member_approve' do
           @event = Event.find_by_id(params[:id])
+          @conflict = false
           if @event.nil?
             error!({"error" => "ID错误。", "status" => "f" }, 400)
           elsif @event.member_phone.to_s.include?(current_member.phone) && !@event.member_approved.to_s.include?(current_member.phone)
             member_approved = @event.member_approved.to_s + current_member.phone + ";"
+            phone = current_member.phone + ";"
             @event.update_attributes(member_approved:member_approved)
-            present @event
+            if @event.whether_weekly
+              @event.week.split(";").each do |week|
+                if Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND week like ?  AND member_approved like ?",true, @event.time, @event.end_date, @event.begin_date, "%#{week}%", "%#{phone}%").count > 1
+                  @conflict = true
+                end
+              end
+            elsif !@event.whether_weekly && !Event.where("week like ? AND time = ? AND begin_date <= ? AND end_date >= ? AND member_approved like ?", "%#{@event.day}%", @event.time, @event.date, @event.date, "%#{phone}%").empty?
+              @conflict = true
+            elsif !@event.whether_weekly && Event.where("date = ? AND time = ? AND member_approved like ?", @event.date, @event.time, "%#{phone}%").count > 1
+              @conflict = true
+            end
+            present [@event, "conflict" => @conflict]
           else
             error!({"error" => "该用户没有操作此日程权限。", "status" => "f" }, 400)
           end
@@ -67,10 +92,22 @@ module API
         desc "Coach update  a event."
         post 'coach_update' do
           @event = Event.where("coach_id = ? AND id = ?", current_coach.id, params[:id]).first
+          @conflict = false
           if @event.nil?
             error!({"error" => "ID错误。", "status" => "f" }, 400)
           elsif @event.update_attributes(params[:event])
-            present @event
+            if @event.whether_weekly
+              @event.week.split(";").each do |week|
+                if Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND week like ?  AND coach_id = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{week}%", current_coach.id).count > 1
+                  @conflict = true
+                end
+              end
+            elsif !@event.whether_weekly && !Event.where("week like ? AND time = ? AND begin_date <= ? AND end_date >= ? AND coach_id = ?", "%#{@event.day}%", @event.time, @event.date, @event.date, current_coach.id).empty?
+              @conflict = true
+            elsif !@event.whether_weekly && Event.where("date = ? AND time = ? AND coach_id = ?", @event.date, @event.time, current_coach.id).count > 1
+              @conflict = true
+            end
+            present [@event, "conflict" => @conflict]
           else
             error!({"error" => "更新日程失败。", "status" => "f" }, 400)
           end
@@ -78,14 +115,26 @@ module API
 
         desc "Member update  a event."
         post 'member_update' do
-          var = current_member.phone + ";"
-          @event = Event.where("member_phone like ? AND id = ?", "%#{var}%", params[:id]).first
+          phone = current_member.phone + ";"
+          @conflict = false
+          @event = Event.where("member_phone like ? AND id = ?", "%#{phone}%", params[:id]).first
           if @event.nil?
             error!({"error" => "ID错误。", "status" => "f" }, 400)
           elsif @event.update_attributes(params[:event])
             member_phone = params[:event][:member_phone] + current_member.phone + ";"
             @event.update_attributes(member_phone:member_phone)
-            present @event
+            if @event.whether_weekly
+              @event.week.split(";").each do |week|
+                if Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND week like ?  AND member_approved like ?",true, @event.time, @event.end_date, @event.begin_date, "%#{week}%", "%#{phone}%").count > 1
+                  @conflict = true
+                end
+              end
+            elsif !@event.whether_weekly && !Event.where("week like ? AND time = ? AND begin_date <= ? AND end_date >= ? AND member_approved like ?", "%#{@event.day}%", @event.time, @event.date, @event.date, "%#{phone}%").empty?
+              @conflict = true
+            elsif !@event.whether_weekly && Event.where("date = ? AND time = ? AND member_approved like ?", @event.date, @event.time, "%#{phone}%").count > 1
+              @conflict = true
+            end
+            present [@event, "conflict" => @conflict]
           else
             error!({"error" => "更新日程失败。", "status" => "f" }, 400)
           end
@@ -126,9 +175,22 @@ module API
         desc "Member create  a event."
         post 'member_create' do
           @event = Event.new(params[:event])
+          @conflict = false
           member_phone = params[:event][:member_phone] + current_member.phone + ";"
+          phone = current_member.phone + ";"
           if @event.update_attributes(member_phone:member_phone, member_approved:current_member.phone+";")
-            present @event
+            if @event.whether_weekly
+              @event.week.split(";").each do |week|
+                if Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND week like ?  AND member_approved like ?",true, @event.time, @event.end_date, @event.begin_date, "%#{week}%", "%#{phone}%").count > 1
+                  @conflict = true
+                end
+              end
+            elsif !@event.whether_weekly && !Event.where("week like ? AND time = ? AND begin_date <= ? AND end_date >= ? AND member_approved like ?", "%#{@event.day}%", @event.time, @event.date, @event.date, "%#{phone}%").empty?
+              @conflict = true
+            elsif !@event.whether_weekly && Event.where("date = ? AND time = ? AND member_approved like ?", @event.date, @event.time, "%#{phone}%").count > 1
+              @conflict = true
+            end
+            present [@event, "conflict" => @conflict]
           else
             error!({"error" => "创建日程失败。", "status" => "f" }, 400)
           end
@@ -137,10 +199,22 @@ module API
         desc "Coach approve the event"
         post 'coach_approve' do
           @event = Event.where("id = ? AND coach_id = ?  AND coach_approved = ?", params[:id], current_coach.id, false).first
+          @conflict = false
           if @event.nil?
             error!({"error" => "ID错误。", "status" => "f" }, 400)
           elsif @event.update_attributes(coach_approved:true)
-            present @event
+            if @event.whether_weekly
+              @event.week.split(";").each do |week|
+                if Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND week like ?  AND coach_id = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{week}%", current_coach.id).count > 1
+                  @conflict = true
+                end
+              end
+            elsif !@event.whether_weekly && !Event.where("week like ? AND time = ? AND begin_date <= ? AND end_date >= ? AND coach_id = ?", "%#{@event.day}%", @event.time, @event.date, @event.date, current_coach.id).empty?
+              @conflict = true
+            elsif !@event.whether_weekly && Event.where("date = ? AND time = ? AND coach_id = ?", @event.date, @event.time, current_coach.id).count > 1
+              @conflict = true
+            end
+            present [@event, "conflict" => @conflict]
           else
             error!({"error" => "该用户没有操作此日程权限。", "status" => "f" }, 400)
           end
