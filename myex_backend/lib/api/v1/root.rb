@@ -6,6 +6,7 @@ module API
       mount API::V1::Memberhabits
       mount API::V1::Events
       mount API::V1::Messages
+      mount API::V1::Assessments
     end
   end
 end

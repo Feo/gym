@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 module API
   module V1
     class Memberhabits < Grape::API

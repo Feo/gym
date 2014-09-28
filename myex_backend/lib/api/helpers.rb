@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 module API
   module APIHelpers
     def current_coach
