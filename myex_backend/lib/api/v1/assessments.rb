@@ -16,12 +16,16 @@ module API
         post 'create' do
           if params[:assessment][:member_id].empty?
             error!({"error" => "参数[assessment][member_id]不能为空。", "status" => "f" }, 400)
+          elsif !current_coach.nil?
+            submitter = current_coach.name
+          elsif !current_member.nil?
+            submitter = current_member.name
           end
           @assessment = Assessment.new(params[:assessment])
           @old_assessment = Assessment.where("member_id = ?", params[:assessment][:member_id]).last
           if !@old_assessment.nil? && Time.now - @old_assessment.created_at < 2592000
             error!({"error" => "一个月内只能评估一次。", "status" => "f" }, 400)
-          elsif @assessment.save
+          elsif @assessment.save && @assessment.update_attributes(submitter:submitter)
             present @assessment
           else
             error!({"error" => "创建评估失败。", "status" => "f" }, 400)
