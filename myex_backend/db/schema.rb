@@ -11,7 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141004044534) do
+ActiveRecord::Schema.define(:version => 20141004053033) do
+
+  create_table "actions", :force => true do |t|
+    t.string   "kind"
+    t.string   "name"
+    t.string   "weight_or_duration"
+    t.string   "group_or_speed"
+    t.string   "time_or_rate"
+    t.integer  "record_id"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
 
   create_table "assessments", :force => true do |t|
     t.integer  "member_id"
@@ -167,6 +178,15 @@ ActiveRecord::Schema.define(:version => 20141004044534) do
     t.string   "time"
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
+  end
+
+  create_table "records", :force => true do |t|
+    t.string   "time"
+    t.string   "submitter"
+    t.boolean  "template",   :default => false
+    t.integer  "member_id"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
 end

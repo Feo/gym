@@ -7,6 +7,7 @@ module API
       mount API::V1::Events
       mount API::V1::Messages
       mount API::V1::Assessments
+      mount API::V1::Records
     end
   end
 end
