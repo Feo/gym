@@ -140,7 +140,6 @@ module API
         desc "Get related member list"
         get 'related_list' do
           @members = Member.where("coach_id = ? AND have_coach = ?", current_coach.id, true)
-          []
         end
 
         desc "Approve member's coach apply."
