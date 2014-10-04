@@ -8,6 +8,7 @@ module API
       mount API::V1::Messages
       mount API::V1::Assessments
       mount API::V1::Records
+      mount API::V1::Photos
     end
   end
 end
