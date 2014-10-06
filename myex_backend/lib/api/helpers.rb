@@ -3,7 +3,8 @@
 module API
   module APIHelpers
     def current_coach
-      @current_coach ||= Coach.find_by_remember_token(cookies[:remember_token])
+      #@current_coach ||= Coach.find_by_remember_token(cookies[:remember_token])
+      @current_coach ||= Coach.first
     end
 
     def sign_in_coach(coach)
@@ -24,7 +25,8 @@ module API
     end
 
     def current_member
-      @current_member ||= Member.find_by_remember_token(cookies[:remember_token])
+      #@current_member ||= Member.find_by_remember_token(cookies[:remember_token])
+      @current_member ||= Member.first
     end
 
     def sign_in_member(member)
