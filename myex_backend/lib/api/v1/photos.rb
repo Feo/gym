@@ -18,6 +18,7 @@ module API
           @photo.title = params[:title]
           @photo.image = params[:image]
           @photo.member_id = params[:member_id]
+          @photo.time = params[:time]
           if @photo.save
             present [@photo, @photo.image.url]
           else
@@ -32,7 +33,7 @@ module API
             @photo.destroy
             present [@photo, @photo.image.url]
           else
-            error!({"error" => "删除消息失败。", "status" => "f" }, 400)
+            error!({"error" => "删除照片失败。", "status" => "f" }, 400)
           end
         end
         
