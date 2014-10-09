@@ -21,22 +21,14 @@ module API
           end
           @record = Record.new(time:params[:time], submitter:submitter, template:false, member_id:params[:member_id])
           if @record.save
-            flag = false
-            if params[:actions].kind_of?(Array)
-              params[:actions].each do |action|
+            if !params[:actions].nil?
+              eval(params[:actions]).each do |action|
                 Action.create(kind:action[0], name:action[1], weight_or_duration:action[2], group_or_speed:action[3], time_or_rate:action[4], record_id:@record.id)
-                flag = true
               end
-            else
-              @record.destroy
-              error!({"error" => "[action]参数错误。", "status" => "f" }, 400)
-            end
-            @actions = Action.where("record_id = ?", @record.id)
-            if flag
+              @actions = Action.where("record_id = ?", @record.id)
               present [@record, @actions]
             else
-              @record.destroy
-              error!({"error" => "创建记录失败。", "status" => "f" }, 400)
+              error!({"error" => "[actions]不能为nil。", "status" => "f" }, 400)
             end
           else
             error!({"error" => "创建记录失败。", "status" => "f" }, 400)
