@@ -1,4 +1,6 @@
 #encoding: utf-8
+require 'net/http'
+require 'digest/md5'
 
 module API
   module V1
@@ -147,6 +149,24 @@ module API
           @member = Member.where("coach_id = ? AND have_coach = ? AND id = ?", current_coach.id, false, params[:id]).first
           if @member
             @member.update_attributes(have_coach:true)
+            sendno = Time.now.to_i
+            receiver_value = @member.phone.to_s
+            input = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value.to_s + I18n.t('.jpush.config.master_secret_member').to_s
+            md5 = Digest::MD5.hexdigest(input)
+            send_description = "批准关联申请"
+            n_content = "教练：#{@member.name}，手机号：#{@member.phone}，已批准关联申请。"
+            msg_content = Hash[:n_content => n_content].to_json
+            output = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
+                                                            :sendno => sendno,
+                                                            :app_key => I18n.t('.jpush.config.app_key_member'),
+                                                            :receiver_type => I18n.t('.jpush.config.receiver_type'),
+                                                            :receiver_value => receiver_value,
+                                                            :verification_code => md5,
+                                                            :msg_type => I18n.t('.jpush.config.msg_type'),
+                                                            :msg_content => msg_content,
+                                                            :send_description => send_description,
+                                                            :time_to_live => I18n.t('.jpush.config.time_to_live'),
+                                                            :platform => I18n.t('.jpush.config.platform'))
             present @member
           else
             error!({"error" => "ID错误。", "status" => "f" }, 400)
@@ -158,6 +178,24 @@ module API
           @member = Member.where("coach_id = ? AND have_coach = ? AND id = ?", current_coach.id, false, params[:id]).first
           if @member
             @member.update_attributes(coach_id:nil)
+            sendno = Time.now.to_i
+            receiver_value = @member.phone.to_s
+            input = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value.to_s + I18n.t('.jpush.config.master_secret_member').to_s
+            md5 = Digest::MD5.hexdigest(input)
+            send_description = "拒绝关联申请"
+            n_content = "教练：#{@member.name}，手机号：#{@member.phone}，拒绝关联申请。"
+            msg_content = Hash[:n_content => n_content].to_json
+            output = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
+                                                            :sendno => sendno,
+                                                            :app_key => I18n.t('.jpush.config.app_key_member'),
+                                                            :receiver_type => I18n.t('.jpush.config.receiver_type'),
+                                                            :receiver_value => receiver_value,
+                                                            :verification_code => md5,
+                                                            :msg_type => I18n.t('.jpush.config.msg_type'),
+                                                            :msg_content => msg_content,
+                                                            :send_description => send_description,
+                                                            :time_to_live => I18n.t('.jpush.config.time_to_live'),
+                                                            :platform => I18n.t('.jpush.config.platform'))
             present @member
           else
             error!({"error" => "ID错误。", "status" => "f" }, 400)

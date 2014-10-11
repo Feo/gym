@@ -1,4 +1,6 @@
 #encoding: utf-8
+require 'net/http'
+require 'digest/md5'
 
 module API
   module V1
@@ -17,6 +19,39 @@ module API
           @message = Message.new(params[:message])
           @message.update_attributes(member_phone_array:params[:message][:member_phone], coach_phone_array:params[:message][:coach_phone])
           if @message.save
+            sendno = Time.now.to_i
+            receiver_value_coach = params[:message][:coach_phone].gsub(/;/, ',')
+            input_coach = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value_coach.to_s + I18n.t('.jpush.config.master_secret_coach').to_s
+            md5_coach = Digest::MD5.hexdigest(input_coach)
+            send_description = "创建新消息"
+            n_content = "新消息：#{params[:message][:content]}"
+            msg_content = Hash[:n_content => n_content].to_json
+            output_coach = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
+                                                            :sendno => sendno,
+                                                            :app_key => I18n.t('.jpush.config.app_key_coach'),
+                                                            :receiver_type => I18n.t('.jpush.config.receiver_type'),
+                                                            :receiver_value => receiver_value_coach,
+                                                            :verification_code => md5_coach,
+                                                            :msg_type => I18n.t('.jpush.config.msg_type'),
+                                                            :msg_content => msg_content,
+                                                            :send_description => send_description,
+                                                            :time_to_live => I18n.t('.jpush.config.time_to_live'),
+                                                            :platform => I18n.t('.jpush.config.platform'))
+            receiver_value_member = params[:message][:member_phone].gsub(/;/, ',')
+            input_member = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value_member.to_s + I18n.t('.jpush.config.master_secret_member').to_s
+            md5_member = Digest::MD5.hexdigest(input_member)
+            msg_content = Hash[:n_content => n_content].to_json
+            output_member = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
+                                                            :sendno => sendno,
+                                                            :app_key => I18n.t('.jpush.config.app_key_member'),
+                                                            :receiver_type => I18n.t('.jpush.config.receiver_type'),
+                                                            :receiver_value => receiver_value_member,
+                                                            :verification_code => md5_member,
+                                                            :msg_type => I18n.t('.jpush.config.msg_type'),
+                                                            :msg_content => msg_content,
+                                                            :send_description => send_description,
+                                                            :time_to_live => I18n.t('.jpush.config.time_to_live'),
+                                                            :platform => I18n.t('.jpush.config.platform'))
             present @message
           else
             error!({"error" => "创建消息失败。", "status" => "f" }, 400)

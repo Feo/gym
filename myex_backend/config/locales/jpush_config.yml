@@ -1,0 +1,13 @@
+en:
+  jpush:
+    config:
+      uri: 'https://api.jpush.cn/v2/push'
+      app_key_coach: '2413e247b79dd30d35b2c0a7'
+      master_secret_coach: '37a88121067c9639488c0816'
+      app_key_member: '3254e45c1dc3378c99d85e08'
+      master_secret_member: 'b22b00a9075760eb68fe201b'
+      receiver_type: 3
+      receiver_type_tag: 2
+      msg_type: 1
+      platform: 'android, ios'
+      time_to_live: 86400
