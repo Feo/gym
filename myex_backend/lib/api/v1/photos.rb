@@ -73,7 +73,7 @@ module API
         get ':id' do
           @photo = Photo.find_by_id(params[:id])
           if @photo
-            present @photo
+            present [@photo, @photo.image.url]
           else
             error!({"error" => "ID错误。", "status" => "f" }, 400)
           end
