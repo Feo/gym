@@ -28,7 +28,7 @@ module API
             submitter = current_member.name
             @assessment = Assessment.new(params[:assessment])
             @old_assessment = Assessment.where("member_id = ?", params[:assessment][:member_id]).last
-            if !@old_assessment.nil? && Time.now - @old_assessment.created_at < 2592000
+            if false #!@old_assessment.nil? && Time.now - @old_assessment.created_at < 2592000
               error!({"error" => "一个月内只能评估一次。", "status" => "f" }, 400)
             elsif @assessment.save && @assessment.update_attributes(submitter:submitter)
               present @assessment
