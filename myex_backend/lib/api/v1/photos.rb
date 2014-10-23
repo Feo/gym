@@ -22,6 +22,13 @@ module API
           @photo.category = params[:category]
           @photo.coach_id = params[:coach_id]
           if @photo.save
+            @member = Member.find_by_id(params[:member_id])
+            @coach = Coach.find_by_id(params[:coach_id])
+            if @photo.category && @member
+              @member.update_attributes(photo_url: @photo.image.url)
+            elsif @photo.category && @coach
+              @coach.update_attributes(photo_url: @photo.image.url)
+            end
             present [@photo, @photo.image.url]
           else
             error!({"error" => "上传照片失败。", "status" => "f" }, 400)
@@ -50,6 +57,13 @@ module API
             @photo.category = params[:category]
             @photo.coach_id = params[:coach_id]
             if @photo.save
+              @member = Member.find_by_id(params[:member_id])
+              @coach = Coach.find_by_id(params[:coach_id])
+              if @photo.category && @member
+                @member.update_attributes(photo_url: @photo.image.url)
+              elsif @photo.category && @coach
+                @coach.update_attributes(photo_url: @photo.image.url)
+              end
               present [@photo, @photo.image.url]
             else
               error!({"error" => "更新照片失败。", "status" => "f" }, 400)

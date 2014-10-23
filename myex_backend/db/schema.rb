@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141022145907) do
+ActiveRecord::Schema.define(:version => 20141023144754) do
 
   create_table "actions", :force => true do |t|
     t.string   "kind"
@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(:version => 20141022145907) do
     t.string   "gender",               :default => ""
     t.string   "token"
     t.boolean  "activated",            :default => false
+    t.string   "photo_url"
   end
 
   create_table "events", :force => true do |t|
@@ -162,6 +163,7 @@ ActiveRecord::Schema.define(:version => 20141022145907) do
     t.datetime "grade_time"
     t.string   "token"
     t.boolean  "activated",       :default => false
+    t.string   "photo_url"
   end
 
   create_table "messages", :force => true do |t|
