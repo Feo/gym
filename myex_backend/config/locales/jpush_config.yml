@@ -1,7 +1,7 @@
 en:
   jpush:
     config:
-      uri: 'https://api.jpush.cn/v2/push'
+      uri: 'http://api.jpush.cn:8800/v2/push'
       app_key_coach: '2413e247b79dd30d35b2c0a7'
       master_secret_coach: '37a88121067c9639488c0816'
       app_key_member: '3254e45c1dc3378c99d85e08'
