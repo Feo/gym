@@ -18,7 +18,7 @@ module API
         post 'coach_create' do
           @event = Event.new(params[:event])
           @conflict = false
-          if @event.update_attributes(coach_id:current_coach.id, coach_approved:true)
+          if @event.update_attributes(coach_id:current_coach.id, coach_approved:true, submitter:current_coach.phone)
             if @event.whether_weekly
               @event.week.split(";").each do |week|
                 if Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND week like ?  AND coach_id = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{week}%", current_coach.id).count > 1
@@ -111,6 +111,12 @@ module API
           @events = Event.where("member_phone like ? AND member_approved like ?", "%#{var}%", "%#{var}%")
         end
 
+        desc "Member get all events"
+        get 'member_all_events' do
+          var = current_member.phone + ";"
+          @events = Event.where("member_phone like ?", "%#{var}%")
+        end
+
         desc "Coach update  a event."
         post 'coach_update' do
           @event = Event.where("coach_id = ? AND id = ?", current_coach.id, params[:id]).first
@@ -200,7 +206,7 @@ module API
           @conflict = false
           member_phone = params[:event][:member_phone] + current_member.phone + ";"
           phone = current_member.phone + ";"
-          if @event.update_attributes(member_phone:member_phone, member_approved:current_member.phone+";")
+          if @event.update_attributes(member_phone:member_phone, member_approved:current_member.phone+";", submitter:current_member.phone)
             if @event.whether_weekly
               @event.week.split(";").each do |week|
                 if Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND week like ?  AND member_approved like ?",true, @event.time, @event.end_date, @event.begin_date, "%#{week}%", "%#{phone}%").count > 1
@@ -281,6 +287,11 @@ module API
         desc "Coach get all approved events"
         get 'coach_approved_events' do
           @events = Event.where("coach_id = ? AND  coach_approved = ?", current_coach.id, true)
+        end
+
+        desc "Coach get all events"
+        get 'coach_all_events' do
+          @events = Event.where("coach_id = ?", current_coach.id)
         end
 
         desc "Get a event infomation"
