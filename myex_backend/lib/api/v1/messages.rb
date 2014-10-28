@@ -17,7 +17,12 @@ module API
         desc "Create a new message."
         post 'create' do
           @message = Message.new(params[:message])
-          @message.update_attributes(member_phone_array:params[:message][:member_phone], coach_phone_array:params[:message][:coach_phone])
+          if !current_coach.nil?
+            submitter = current_coach.phone
+          elsif !current_member.nil?
+            submitter = current_member.phone
+          end
+          @message.update_attributes(member_phone_array:params[:message][:member_phone], coach_phone_array:params[:message][:coach_phone], submitter:submitter)
           if @message.save
             sendno = Time.now.to_i
             receiver_value_coach = params[:message][:coach_phone].gsub(/;/, ',')
