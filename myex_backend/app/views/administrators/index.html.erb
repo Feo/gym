@@ -1,0 +1,65 @@
+<%= render 'shared/main' %>
+
+<div class="wrapper_small">
+    <div class="op_page">
+        <div class="return">
+        </div>
+        <div class="content_form g_border">
+            <div class="hd g_box">
+                <div class="op_list g_tp_10">
+                    <%= link_to "个人信息", current_admin %>
+                    <%= link_to "操作员信息", administrators_path, :class => "current" %>
+                </div>
+            </div>
+
+            <div class="bd no_tp">
+              <%= form_for @admin do |f| %>
+                <div class="g_input">
+                  <%= f.label :name, "用户名", :class =>  "gi_label" %>
+                  <%= f.text_field :name, :class => "gi_input", :type => "text", :placeholder => "" %>
+                </div>
+                <div class="g_input">
+                  <%= f.label :phone, "手机号", :class =>  "gi_label" %>
+                  <%= f.text_field :phone, :class => "gi_input", :type => "text", :placeholder => "" %>
+                </div>
+                <div class="g_input">
+                  <%= f.label :email, "邮箱", :class =>  "gi_label" %>
+                  <%= f.text_field :email, :class => "gi_input", :type => "text", :placeholder => "" %>
+                </div>
+                <div class="g_input">
+                    <%= f.label :password, "密码", :class =>  "gi_label" %>
+                    <%= f.password_field :password, :class => "gi_input", :type => "password", :placeholder => "" %>
+                </div>
+                <div class="g_input">
+                    <%= f.label :password_confirmation, "密码确认", :class =>  "gi_label" %>
+                    <%= f.password_field :password_confirmation, :class => "gi_input", :type => "password", :placeholder => "" %>
+                </div>
+                <br/>
+                <div class="g_box">
+                    <%= f.label :role, "管理员权限 | ", :class => "gi_label" %>
+                    <%= f.select :role, ["高级管理员", "初级管理员"], :class => "gi_input" %>
+
+                </div>
+
+                <div class="item align_right">
+                    <%= f.submit "　创建　", :class => "g_btn_blue" %>
+                </div>
+              <% end %>
+
+            </div>
+            
+
+            <!--phone Start -->
+                <div id="tokenContainer">
+                    <div class="block">
+                        <p class="title">操作员</p>
+                        <% @admins.each do |admin| %>
+                          <p><strong><%= link_to admin.name, admin %></strong></p>
+                        <% end %>
+                    </div>
+                </div>
+
+
+        </div>
+    </div>
+</div>
