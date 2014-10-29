@@ -9,7 +9,7 @@ module API
       resource :memberhabits do
 
         before do
-          authenticate_member!
+          authenticate!
         end
 
         desc "Get member habit table."
