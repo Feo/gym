@@ -7,16 +7,16 @@
         <div class="content_form g_border">
             <div class="hd g_box">
                 <div class="op_list g_tp_10">
-                    <%= link_to "给所有教练发送通知", message_index_administrator_path(current_admin), :class => "current"%>
+                    <%= link_to "给所有教练发送通知", message_index_administrator_path(current_admin)%>
                     <%= link_to "给特定教练发送通知", notice_special_view_administrators_path %>
-                    <%= link_to "给所有会员发送通知", notice_all_member_administrators_path %>
+                    <%= link_to "给所有会员发送通知", notice_all_member_administrators_path, :class => "current" %>
                     <%= link_to "给特定会员发送通知", notice_special_member_administrators_path %>
                     <%= link_to "通知列表", notices_administrators_path %>
                 </div>
             </div>
 
             <div class="bd no_tp">
-              <%= form_for @notice, :url => {:action => 'message_create_all'}  do |f| %>
+              <%= form_for @notice, :url => {:action => 'notice_all_member_create'}  do |f| %>
                 <div class="g_input">
                   <%= f.label :title, "标题", :class =>  "gi_label" %>
                   <%= f.text_field :title, :class => "gi_input", :type => "text", :placeholder => "" %>

@@ -17,6 +17,10 @@ MyexBackend::Application.routes.draw do
       post 'message_update_all'
       get 'notice_special_view'
       post 'message_create_special'
+      get 'notice_all_member'
+      post 'notice_all_member_create'
+      get 'notice_special_member'
+      post 'notice_special_member_create'
 
     end
   end

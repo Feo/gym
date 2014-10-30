@@ -104,4 +104,44 @@ class AdministratorsController < ApplicationController
       redirect_to notices_administrators_path
     end
   end
+
+  def notice_all_member
+    @notice = Notice.new
+  end
+
+  def notice_all_member_create
+    @members = Member.all
+    phones = ""
+    @members.each do |member|
+      phones << member.phone + ";"
+    end
+    @notice = Notice.new(title:params[:notice][:title], content:params[:notice][:content], category:params[:notice][:category], member_phone:phones)
+    if @notice.save
+      flash[:success] = "消息发送成功。"
+      redirect_to notices_administrators_path
+    else
+      flash[:error] = "消息发送失败。"
+      redirect_to notices_administrators_path
+    end
+  end
+
+  def notice_special_member
+    @notice = Notice.new
+    @members = Member.all
+  end
+
+  def notice_special_member_create
+    phones = ""
+    params[:phones].each do |phone|
+      phones << phone + ";"
+    end
+    @notice = Notice.new(title:params[:notice][:title], content:params[:notice][:content], category:params[:notice][:category], member_phone:phones)
+    if @notice.save
+      flash[:success] = "消息发送成功。"
+      redirect_to notices_administrators_path
+    else
+      flash[:error] = "消息发送失败。"
+      redirect_to notices_administrators_path
+    end
+  end
 end
