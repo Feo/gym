@@ -99,7 +99,7 @@ class AdministratorsController < ApplicationController
   end
 
   def notices
-    @notices = Notice.all
+    @notices = Notice.paginate(:page => params[:page], :per_page => 30)
   end
 
   def notice_show
