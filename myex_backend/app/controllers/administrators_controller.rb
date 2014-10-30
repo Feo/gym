@@ -1,5 +1,7 @@
 #encoding: utf-8
 class AdministratorsController < ApplicationController
+  before_filter :signed_in
+
   def show
     begin
       @admin = Administrator.find(params[:id])
@@ -69,6 +71,25 @@ class AdministratorsController < ApplicationController
     end
     @notice = Notice.new(title:params[:notice][:title], content:params[:notice][:content], category:params[:notice][:category], coach_phone:coaches)
     if @notice.save
+      sendno = Time.now.to_i
+      receiver_value_coach = coaches.gsub(/;/, ',')
+      input_coach = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value_coach.to_s + I18n.t('.jpush.config.master_secret_coach').to_s
+      md5_coach = Digest::MD5.hexdigest(input_coach)
+      send_description = "创建新消息"
+      n_content = "标题：#{params[:notice][:title]};内容：#{params[:notice][:content]}"
+      n_extras = Hash[:type => params[:notice][:category]]
+      msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
+      output_coach = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
+                                                      :sendno => sendno,
+                                                      :app_key => I18n.t('.jpush.config.app_key_coach'),
+                                                      :receiver_type => I18n.t('.jpush.config.receiver_type'),
+                                                      :receiver_value => receiver_value_coach,
+                                                      :verification_code => md5_coach,
+                                                      :msg_type => I18n.t('.jpush.config.msg_type'),
+                                                      :msg_content => msg_content,
+                                                      :send_description => send_description,
+                                                      :time_to_live => I18n.t('.jpush.config.time_to_live'),
+                                                      :platform => I18n.t('.jpush.config.platform'))
       flash[:success] = "消息发送成功。"
       redirect_to notices_administrators_path
     else
@@ -97,6 +118,25 @@ class AdministratorsController < ApplicationController
     end
     @notice = Notice.new(title:params[:notice][:title], content:params[:notice][:content], category:params[:notice][:category], coach_phone:coaches)
     if @notice.save
+      sendno = Time.now.to_i
+      receiver_value_coach = coaches.gsub(/;/, ',')
+      input_coach = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value_coach.to_s + I18n.t('.jpush.config.master_secret_coach').to_s
+      md5_coach = Digest::MD5.hexdigest(input_coach)
+      send_description = "创建新消息"
+      n_content = "标题：#{params[:notice][:title]};内容：#{params[:notice][:content]}"
+      n_extras = Hash[:type => params[:notice][:category]]
+      msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
+      output_coach = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
+                                                      :sendno => sendno,
+                                                      :app_key => I18n.t('.jpush.config.app_key_coach'),
+                                                      :receiver_type => I18n.t('.jpush.config.receiver_type'),
+                                                      :receiver_value => receiver_value_coach,
+                                                      :verification_code => md5_coach,
+                                                      :msg_type => I18n.t('.jpush.config.msg_type'),
+                                                      :msg_content => msg_content,
+                                                      :send_description => send_description,
+                                                      :time_to_live => I18n.t('.jpush.config.time_to_live'),
+                                                      :platform => I18n.t('.jpush.config.platform'))
       flash[:success] = "消息发送成功。"
       redirect_to notices_administrators_path
     else
@@ -117,6 +157,25 @@ class AdministratorsController < ApplicationController
     end
     @notice = Notice.new(title:params[:notice][:title], content:params[:notice][:content], category:params[:notice][:category], member_phone:phones)
     if @notice.save
+      sendno = Time.now.to_i
+      receiver_value_member = phones.gsub(/;/, ',')
+      input_member = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value_member.to_s + I18n.t('.jpush.config.master_secret_member').to_s
+      md5_member = Digest::MD5.hexdigest(input_member)
+      send_description = "创建新消息"
+      n_content = "标题：#{params[:notice][:title]};内容：#{params[:notice][:content]}"
+      n_extras = Hash[:type => params[:notice][:category]]
+      msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
+      output_member = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
+                                                      :sendno => sendno,
+                                                      :app_key => I18n.t('.jpush.config.app_key_member'),
+                                                      :receiver_type => I18n.t('.jpush.config.receiver_type'),
+                                                      :receiver_value => receiver_value_member,
+                                                      :verification_code => md5_member,
+                                                      :msg_type => I18n.t('.jpush.config.msg_type'),
+                                                      :msg_content => msg_content,
+                                                      :send_description => send_description,
+                                                      :time_to_live => I18n.t('.jpush.config.time_to_live'),
+                                                      :platform => I18n.t('.jpush.config.platform'))
       flash[:success] = "消息发送成功。"
       redirect_to notices_administrators_path
     else
@@ -137,6 +196,25 @@ class AdministratorsController < ApplicationController
     end
     @notice = Notice.new(title:params[:notice][:title], content:params[:notice][:content], category:params[:notice][:category], member_phone:phones)
     if @notice.save
+      sendno = Time.now.to_i
+      receiver_value_member = phones.gsub(/;/, ',')
+      input_member = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value_member.to_s + I18n.t('.jpush.config.master_secret_member').to_s
+      md5_member = Digest::MD5.hexdigest(input_member)
+      send_description = "创建新消息"
+      n_content = "标题：#{params[:notice][:title]};内容：#{params[:notice][:content]}"
+      n_extras = Hash[:type => params[:notice][:category]]
+      msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
+      output_member = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
+                                                      :sendno => sendno,
+                                                      :app_key => I18n.t('.jpush.config.app_key_member'),
+                                                      :receiver_type => I18n.t('.jpush.config.receiver_type'),
+                                                      :receiver_value => receiver_value_member,
+                                                      :verification_code => md5_member,
+                                                      :msg_type => I18n.t('.jpush.config.msg_type'),
+                                                      :msg_content => msg_content,
+                                                      :send_description => send_description,
+                                                      :time_to_live => I18n.t('.jpush.config.time_to_live'),
+                                                      :platform => I18n.t('.jpush.config.platform'))
       flash[:success] = "消息发送成功。"
       redirect_to notices_administrators_path
     else
