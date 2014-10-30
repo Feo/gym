@@ -5,6 +5,18 @@ MyexBackend::Application.routes.draw do
   match '/logout', :to => 'sessions#destroy', :via => :delete
   resources :sessions
   mount API::Root => '/'
-  resources :administrators
+  resources :administrators do
+    member do
+      get 'message_index'
+      post 'message_create_all'
+    end
+
+    collection do
+      get 'notices'
+      get 'notice_show'
+      post 'message_update_all'
+
+    end
+  end
   
 end

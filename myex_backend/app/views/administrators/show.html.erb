@@ -36,10 +36,13 @@
                 </div>
 
                 <br/>
-                <div class="g_box">
-                    <%= f.label :role, "管理员权限 | ", :class => "gi_label" %>
-                    <%= f.select :role, ["高级管理员", "初级管理员"], :class => "gi_input" %>
-                </div>
+                <% if @admin != current_admin %>
+                  <div class="g_box">
+                      <%= f.label :role, "管理员权限 | ", :class => "gi_label" %>
+                      <%= f.select :role, ["高级管理员", "初级管理员"], :class => "gi_input" %>
+                  </div>
+                <% end %>
+
 
                 <div class="item align_right">
                   <% if @admin != current_admin && current_admin.role == "高级管理员" %>

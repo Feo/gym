@@ -1,0 +1,30 @@
+<%= render 'shared/main2' %>
+
+<div class="wrapper_small">
+    <div class="op_page">
+        <div class="return">
+        </div>
+        <div class="content_form g_border">
+            <div class="hd g_box">
+                <div class="op_list g_tp_10">
+                    <%= link_to "给所有教练发送通知", message_index_administrator_path(current_admin) %>
+                    <%= link_to "给特定发送通知", "#" %>
+                    <%= link_to "通知列表", notices_administrators_path, :class => "current" %>
+                </div>
+            </div>
+
+                <div id="tokenContainer">
+                    <div class="block">
+                        <p class="title">通知</p>
+                        <% @notices.each do |notice| %>
+                          <li><strong><%= link_to "#{notice.title}", notice_show_administrators_path(notice) %></strong></li>
+                        <% end %>
+                    </div>
+                </div>
+            
+
+
+
+        </div>
+    </div>
+</div>

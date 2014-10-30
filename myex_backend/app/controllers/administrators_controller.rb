@@ -56,4 +56,32 @@ class AdministratorsController < ApplicationController
       redirect_to administrators_path
     end
   end
+
+  def message_index
+    @notice = Notice.new
+  end
+
+  def message_create_all
+    @coaches = Coach.all
+    coaches = ""
+    @coaches.each do |coach|
+      coaches << coach.phone + ";"
+    end
+    @notice = Notice.new(title:params[:notice][:title], content:params[:notice][:content], category:params[:notice][:category], coach_phone:coaches)
+    if @notice.save
+      flash[:success] = "消息发送成功。"
+      redirect_to message_index_administrator_path(current_admin)
+    else
+      flash[:error] = "消息发送失败。"
+      redirect_to message_index_administrator_path(current_admin)
+    end
+  end
+
+  def notices
+    @notices = Notice.all
+  end
+
+  def notice_show
+    @notice = Notice.find(params[:format])
+  end
 end
