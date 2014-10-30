@@ -70,10 +70,10 @@ class AdministratorsController < ApplicationController
     @notice = Notice.new(title:params[:notice][:title], content:params[:notice][:content], category:params[:notice][:category], coach_phone:coaches)
     if @notice.save
       flash[:success] = "消息发送成功。"
-      redirect_to message_index_administrator_path(current_admin)
+      redirect_to notices_administrators_path
     else
       flash[:error] = "消息发送失败。"
-      redirect_to message_index_administrator_path(current_admin)
+      redirect_to notices_administrators_path
     end
   end
 
@@ -83,5 +83,25 @@ class AdministratorsController < ApplicationController
 
   def notice_show
     @notice = Notice.find(params[:format])
+  end
+
+  def notice_special_view
+    @notice = Notice.new
+    @coaches = Coach.all
+  end
+
+  def message_create_special
+    coaches = ""
+    params[:phones].each do |phone|
+      coaches << phone + ";"
+    end
+    @notice = Notice.new(title:params[:notice][:title], content:params[:notice][:content], category:params[:notice][:category], coach_phone:coaches)
+    if @notice.save
+      flash[:success] = "消息发送成功。"
+      redirect_to notices_administrators_path
+    else
+      flash[:error] = "消息发送失败。"
+      redirect_to notices_administrators_path
+    end
   end
 end

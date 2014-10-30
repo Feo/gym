@@ -15,6 +15,8 @@ MyexBackend::Application.routes.draw do
       get 'notices'
       get 'notice_show'
       post 'message_update_all'
+      get 'notice_special_view'
+      post 'message_create_special'
 
     end
   end
