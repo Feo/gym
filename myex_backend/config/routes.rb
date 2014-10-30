@@ -3,7 +3,14 @@ MyexBackend::Application.routes.draw do
   root :to => 'sessions#new'
   match '/login', :to => 'sessions#new'
   match '/logout', :to => 'sessions#destroy', :via => :delete
-  resources :sessions
+  resources :sessions do
+    collection do
+      get 'forget_password'
+      post 'send_token'
+      get 'reset'
+      post 'reset_password'
+    end
+  end
   mount API::Root => '/'
   resources :administrators do
     member do

@@ -25,6 +25,7 @@
             <%= check_box_tag :remember_me, 1, params[:remember_me], :class =>"icon_checkbox" %>
             <%= label_tag :remember_me, "记住登录" %>
           </label>
+          <%= link_to "忘记密码", forget_password_sessions_path, :class => "modify" %>
         </div>
 
         <div class="item">
