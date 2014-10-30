@@ -36,7 +36,8 @@ module API
             md5 = Digest::MD5.hexdigest(input)
             send_description = "创建新日程"
             n_content = "教练：#{current_coach.name}，手机号：#{current_coach.phone}，创建新日程。"
-            msg_content = Hash[:n_content => n_content].to_json
+            n_extras = Hash[:type => "message"]
+            msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
             output = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
                                                             :sendno => sendno,
                                                             :app_key => I18n.t('.jpush.config.app_key_member'),
@@ -225,7 +226,8 @@ module API
             md5 = Digest::MD5.hexdigest(input)
             send_description = "创建新日程"
             n_content = "会员：#{current_member.name}，手机号：#{current_member.phone}，创建新日程。"
-            msg_content = Hash[:n_content => n_content].to_json
+            n_extras = Hash[:type => "message"]
+            msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
             output = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
                                                             :sendno => sendno,
                                                             :app_key => I18n.t('.jpush.config.app_key_coach'),

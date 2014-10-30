@@ -155,7 +155,8 @@ module API
             md5 = Digest::MD5.hexdigest(input)
             send_description = "批准关联申请"
             n_content = "教练：#{@member.name}，手机号：#{@member.phone}，已批准关联申请。"
-            msg_content = Hash[:n_content => n_content].to_json
+            n_extras = Hash[:type => "message"]
+            msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
             output = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
                                                             :sendno => sendno,
                                                             :app_key => I18n.t('.jpush.config.app_key_member'),
@@ -184,7 +185,8 @@ module API
             md5 = Digest::MD5.hexdigest(input)
             send_description = "拒绝关联申请"
             n_content = "教练：#{@member.name}，手机号：#{@member.phone}，拒绝关联申请。"
-            msg_content = Hash[:n_content => n_content].to_json
+            n_extras = Hash[:type => "message"]
+            msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
             output = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
                                                             :sendno => sendno,
                                                             :app_key => I18n.t('.jpush.config.app_key_member'),

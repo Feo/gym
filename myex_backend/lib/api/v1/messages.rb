@@ -30,7 +30,8 @@ module API
             md5_coach = Digest::MD5.hexdigest(input_coach)
             send_description = "创建新消息"
             n_content = "新消息：#{params[:message][:content]}"
-            msg_content = Hash[:n_content => n_content].to_json
+            n_extras = Hash[:type => "message"]
+            msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
             output_coach = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
                                                             :sendno => sendno,
                                                             :app_key => I18n.t('.jpush.config.app_key_coach'),
@@ -45,7 +46,7 @@ module API
             receiver_value_member = params[:message][:member_phone].gsub(/;/, ',')
             input_member = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value_member.to_s + I18n.t('.jpush.config.master_secret_member').to_s
             md5_member = Digest::MD5.hexdigest(input_member)
-            msg_content = Hash[:n_content => n_content].to_json
+            msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
             output_member = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
                                                             :sendno => sendno,
                                                             :app_key => I18n.t('.jpush.config.app_key_member'),
