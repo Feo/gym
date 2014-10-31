@@ -69,7 +69,7 @@ class AdministratorsController < ApplicationController
     @coaches.each do |coach|
       coaches << coach.phone + ";"
     end
-    @notice = Notice.new(title:params[:notice][:title], content:params[:notice][:content], category:params[:notice][:category], coach_phone:coaches)
+    @notice = Notice.new(title:params[:notice][:title], content:params[:notice][:content], category:params[:notice][:category], coach_phone:coaches, coach_phone_array:coaches)
     if @notice.save
       sendno = Time.now.to_i
       receiver_value_coach = coaches.gsub(/;/, ',')
@@ -116,7 +116,7 @@ class AdministratorsController < ApplicationController
     params[:phones].each do |phone|
       coaches << phone + ";"
     end
-    @notice = Notice.new(title:params[:notice][:title], content:params[:notice][:content], category:params[:notice][:category], coach_phone:coaches)
+    @notice = Notice.new(title:params[:notice][:title], content:params[:notice][:content], category:params[:notice][:category], coach_phone:coaches, coach_phone_array:coaches)
     if @notice.save
       sendno = Time.now.to_i
       receiver_value_coach = coaches.gsub(/;/, ',')
@@ -155,7 +155,7 @@ class AdministratorsController < ApplicationController
     @members.each do |member|
       phones << member.phone + ";"
     end
-    @notice = Notice.new(title:params[:notice][:title], content:params[:notice][:content], category:params[:notice][:category], member_phone:phones)
+    @notice = Notice.new(title:params[:notice][:title], content:params[:notice][:content], category:params[:notice][:category], member_phone:phones, member_phone_array:phones)
     if @notice.save
       sendno = Time.now.to_i
       receiver_value_member = phones.gsub(/;/, ',')
@@ -194,7 +194,7 @@ class AdministratorsController < ApplicationController
     params[:phones].each do |phone|
       phones << phone + ";"
     end
-    @notice = Notice.new(title:params[:notice][:title], content:params[:notice][:content], category:params[:notice][:category], member_phone:phones)
+    @notice = Notice.new(title:params[:notice][:title], content:params[:notice][:content], category:params[:notice][:category], member_phone:phones, member_phone_array:phones)
     if @notice.save
       sendno = Time.now.to_i
       receiver_value_member = phones.gsub(/;/, ',')
