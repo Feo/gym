@@ -34,8 +34,9 @@
                 <div id="tokenContainer">
                     <div class="block">
                         <p class="title">通知</p>
+                        <li><strong><input type="checkbox" id="select_all"/>选择全部</li></strong>
                         <% @coaches.each do |coach| %>
-                          <li><strong><%= check_box_tag "phones[]", coach.phone %>  教练姓名：<%= coach.name %> | 手机号：<%= coach.phone %></strong></li>
+                          <li><strong><%= check_box_tag "phones[]", coach.phone, false, class: 'box' %>  教练姓名：<%= coach.name %> | 手机号：<%= coach.phone %></strong></li>
                         <% end %>
                     </div>
                 </div>
