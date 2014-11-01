@@ -80,7 +80,7 @@ module API
         post 'coach_delete' do
           @message = Message.find_by_id(params[:id])
           if @message
-            var = current_coach.phone + ";"
+            var = current_coach.phone
             coach_phone = @message.coach_phone
             coach_phone.slice!(/#{var}/)
             @message.update_attributes(coach_phone:coach_phone + ";")
@@ -95,7 +95,7 @@ module API
         post 'member_delete' do
           @message = Message.find_by_id(params[:id])
           if @message
-            var = current_member.phone + ";"
+            var = current_member.phone
             member_phone = @message.member_phone
             member_phone.slice!(/#{var}/)
             @message.update_attributes(member_phone:member_phone + ";")
