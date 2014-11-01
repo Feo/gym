@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141031030707) do
+ActiveRecord::Schema.define(:version => 20141101091547) do
 
   create_table "actions", :force => true do |t|
     t.string   "kind"
@@ -157,19 +157,19 @@ ActiveRecord::Schema.define(:version => 20141031030707) do
   end
 
   create_table "members", :force => true do |t|
-    t.string   "nickname"
-    t.string   "name"
-    t.string   "gender"
+    t.string   "nickname",           :default => ""
+    t.string   "name",               :default => ""
+    t.string   "gender",             :default => ""
     t.integer  "age"
-    t.string   "profession"
-    t.string   "province"
-    t.string   "city"
-    t.string   "district"
-    t.string   "street"
-    t.string   "phone"
-    t.string   "email"
-    t.string   "qq"
-    t.string   "weixin"
+    t.string   "profession",         :default => ""
+    t.string   "province",           :default => ""
+    t.string   "city",               :default => ""
+    t.string   "district",           :default => ""
+    t.string   "street",             :default => ""
+    t.string   "phone",              :default => ""
+    t.string   "email",              :default => ""
+    t.string   "qq",                 :default => ""
+    t.string   "weixin",             :default => ""
     t.string   "password_digest"
     t.string   "remember_token"
     t.text     "sports"
@@ -177,7 +177,7 @@ ActiveRecord::Schema.define(:version => 20141031030707) do
     t.integer  "coach_id"
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
-    t.float    "grade"
+    t.string   "grade",              :default => ""
     t.datetime "grade_time"
     t.string   "token"
     t.boolean  "activated",          :default => false
@@ -185,7 +185,7 @@ ActiveRecord::Schema.define(:version => 20141031030707) do
     t.float    "accuracy_grade",     :default => 0.0
     t.float    "appetency_grade",    :default => 0.0
     t.float    "professional_grade", :default => 0.0
-    t.string   "level"
+    t.string   "level",              :default => ""
   end
 
   create_table "messages", :force => true do |t|

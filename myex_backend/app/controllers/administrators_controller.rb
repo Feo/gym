@@ -108,7 +108,7 @@ class AdministratorsController < ApplicationController
 
   def notice_special_view
     @notice = Notice.new
-    @coaches = Coach.all
+    @coaches = Coach.where("province like ? AND city like ? AND profession like ? AND gender like ?", "%#{params[:coach][:province]}%", "%#{params[:coach][:city]}%", "%#{params[:coach][:profession]}%", "%#{params[:coach][:gender]}%")
   end
 
   def message_create_special
@@ -186,7 +186,7 @@ class AdministratorsController < ApplicationController
 
   def notice_special_member
     @notice = Notice.new
-    @members = Member.all
+    @members = Member.where("province like ? AND city like ? AND gender like ?", "%#{params[:member][:province]}%", "%#{params[:member][:city]}%", "%#{params[:member][:gender]}%")
   end
 
   def notice_special_member_create
@@ -222,4 +222,13 @@ class AdministratorsController < ApplicationController
       redirect_to notices_administrators_path
     end
   end
+
+  def find_special_coach
+    @coach = Coach.new
+  end
+
+  def find_special_member
+    @member = Member.new
+  end
+
 end

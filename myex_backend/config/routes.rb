@@ -22,12 +22,15 @@ MyexBackend::Application.routes.draw do
       get 'notices'
       get 'notice_show'
       post 'message_update_all'
-      get 'notice_special_view'
+      post 'notice_special_view'
       post 'message_create_special'
       get 'notice_all_member'
       post 'notice_all_member_create'
-      get 'notice_special_member'
+      post 'notice_special_member'
       post 'notice_special_member_create'
+      get 'find_special_coach'
+      post 'find_coaches'
+      get 'find_special_member'
 
     end
   end
