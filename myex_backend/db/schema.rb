@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141031024805) do
+ActiveRecord::Schema.define(:version => 20141031030707) do
 
   create_table "actions", :force => true do |t|
     t.string   "kind"
@@ -114,6 +114,10 @@ ActiveRecord::Schema.define(:version => 20141031024805) do
     t.string   "token"
     t.boolean  "activated",            :default => false
     t.string   "photo_url"
+    t.float    "accuracy_grade",       :default => 0.0
+    t.float    "appetency_grade",      :default => 0.0
+    t.float    "professional_grade",   :default => 0.0
+    t.string   "level"
   end
 
   create_table "events", :force => true do |t|
@@ -169,15 +173,19 @@ ActiveRecord::Schema.define(:version => 20141031024805) do
     t.string   "password_digest"
     t.string   "remember_token"
     t.text     "sports"
-    t.boolean  "have_coach",      :default => false
+    t.boolean  "have_coach",         :default => false
     t.integer  "coach_id"
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
     t.float    "grade"
     t.datetime "grade_time"
     t.string   "token"
-    t.boolean  "activated",       :default => false
+    t.boolean  "activated",          :default => false
     t.string   "photo_url"
+    t.float    "accuracy_grade",     :default => 0.0
+    t.float    "appetency_grade",    :default => 0.0
+    t.float    "professional_grade", :default => 0.0
+    t.string   "level"
   end
 
   create_table "messages", :force => true do |t|
