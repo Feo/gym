@@ -268,17 +268,51 @@ module API
           @member = current_member
           if !@member.have_coach
             error!({"error" => "会员没有关联的私教。", "status" => "f" }, 400)
-          elsif @member.grade_time && Time.now - @member.grade_time < 1.month
+          elsif false#@member.grade_time && Time.now - @member.grade_time < 1.month
             error!({"error" => "一个月内只能修改一次。", "status" => "f" }, 400)
           else
-            @member.update_attributes(grade:params[:grade], grade_time:Time.now)
+            @member.update_attributes(accuracy_grade:params[:accuracy_grade],
+                                                                appetency_grade:params[:appetency_grade],
+                                                                professional_grade:params[:professional_grade],
+                                                                grade:(params[:accuracy_grade] + params[:appetency_grade] + params[:professional_grade]),
+                                                                grade_time:Time.now)
             @members = Member.where("have_coach = ? AND coach_id = ? AND grade is not null", true, @member.coach_id)
-            total_grade = 0
+            total_accuracy_grade = 0
+            total_appetency_grade = 0
+            total_professional_grade = 0
             @members.each do |member|
-              total_grade = total_grade + member.grade
+              total_accuracy_grade = total_accuracy_grade + member.accuracy_grade
+              total_appetency_grade = total_appetency_grade + member.appetency_grade
+              total_professional_grade = total_professional_grade + member.professional_grade
             end
             @coach = Coach.find_by_id(@member.coach_id)
-            @coach.update_attributes(grade:((total_grade/@members.count).round(1)))
+            coach_accuracy_grade = (total_accuracy_grade/@members.count).round(1)
+            coach_appetency_grade = (total_appetency_grade/@members.count).round(1)
+            coach_professional_grade = (total_professional_grade/@members.count).round(1)
+            @coach.update_attributes(accuracy_grade:coach_accuracy_grade,
+                                                            appetency_grade:coach_appetency_grade,
+                                                            professional_grade:coach_professional_grade,
+                                                            grade:(coach_accuracy_grade + coach_appetency_grade + coach_professional_grade))
+
+            coach_count = Coach.where("grade != ?", 0).count
+            level1 =  (coach_count * 0.1).ceil
+            level2 =  (coach_count * 0.3).ceil
+            level3 =  (coach_count * 0.7).ceil
+            level4 =  (coach_count * 0.9).ceil
+            level5 =  (coach_count * 1).ceil
+            if Coach.where("grade != ?", 0).order("grade DESC").first(level1).include? @coach
+              level = "1"
+            elsif Coach.where("grade != ?", 0).order("grade DESC").first(level2).include? @coach
+              level = "2"
+            elsif Coach.where("grade != ?", 0).order("grade DESC").first(level3).include? @coach
+              level = "3"
+            elsif Coach.where("grade != ?", 0).order("grade DESC").first(level4).include? @coach
+              level = "4"
+            elsif Coach.where("grade != ?", 0).order("grade DESC").first(level5).include? @coach
+              level = "5"
+            end
+            @coach.update_attributes(level:level)
+
             sign_in_member @member
             present [@member, @coach]
           end
