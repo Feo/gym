@@ -1,5 +1,5 @@
 class Member < ActiveRecord::Base
-  attr_accessible :nickname, :name, :gender, :age, :profession, :province, :city, :district, :street, :phone, :email, :qq, :weixin, :password, :password_confirmation, :sports, :have_coach, :coach_id, :grade, :grade_time, :token, :activated, :photo_url, :accuracy_grade, :appetency_grade, :professional_grade, :level
+  attr_accessible :nickname, :name, :gender, :age, :profession, :province, :city, :district, :street, :phone, :email, :qq, :weixin, :password, :password_confirmation, :sports, :have_coach, :coach_id, :grade, :grade_time, :token, :activated, :photo_url, :accuracy_grade, :appetency_grade, :professional_grade, :level, :score
   has_secure_password
   serialize :sports
 
