@@ -1,4 +1,5 @@
 #encoding: utf-8
+require 'pry'
 
 module API
   module V1
@@ -61,7 +62,7 @@ module API
 
         desc "Get all assessments."
         post 'all' do
-          @assessments = Assessment.where("member_id = ?", params[:member_id])
+          @assessments = Assessment.where("member_id = ?", params[:member_id]).order("created_at DESC")
           if @assessments
             present @assessments
           else

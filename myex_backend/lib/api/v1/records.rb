@@ -99,7 +99,7 @@ module API
         desc "Get all records."
         post 'all' do
           response = []
-          @records = Record.where("template = ? AND member_id = ?", false, params[:id])
+          @records = Record.where("template = ? AND member_id = ?", false, params[:id]).order("created_at DESC")
           @records.each do |record|
             @actions = Action.where("record_id = ?", record.id)
             response << [record, @actions]
