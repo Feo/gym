@@ -318,7 +318,62 @@ module API
           end
         end
 
+        desc "Get apply coach list"
+        get 'apply_list' do
+          @coaches = []
+          if !current_member.apply_coach.to_s.empty?
+            current_member.apply_coach.to_s.split(/;/).each do |phone|
+              @coaches << Coach.find_by_phone(phone)
+            end
+          end
+          present @coaches
+        end
+
+        desc "Approve coach's apply."
+        post 'approve_apply' do
+          @member = current_member
+          @coach = Coach.find_by_id(params[:id])
+          if !@member.have_coach
+            @member.update_attributes(have_coach:true, coach_id:@coach.id)
+            sendno = Time.now.to_i
+            receiver_value = @coach.phone.to_s
+            input = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value.to_s + I18n.t('.jpush.config.master_secret_coach').to_s
+            md5 = Digest::MD5.hexdigest(input)
+            send_description = "申请关联教练"
+            n_content = "会员：#{@member.name}，手机号：#{@member.phone}，申请关联教练。"
+            n_extras = Hash[:type => "message"]
+            msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
+            output = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
+                                                            :sendno => sendno,
+                                                            :app_key => I18n.t('.jpush.config.app_key_coach'),
+                                                            :receiver_type => I18n.t('.jpush.config.receiver_type'),
+                                                            :receiver_value => receiver_value,
+                                                            :verification_code => md5,
+                                                            :msg_type => I18n.t('.jpush.config.msg_type'),
+                                                            :msg_content => msg_content,
+                                                            :send_description => send_description,
+                                                            :time_to_live => I18n.t('.jpush.config.time_to_live'),
+                                                            :platform => I18n.t('.jpush.config.platform'))
+            present @member
+          else
+            error!({"error" => "会员已关联教练。", "status" => "f" }, 400)
+          end
+        end
         
+
+        desc "Refuse coach's apply."
+        post 'refuse_apply' do
+          @member = current_member
+          @coach = Coach.find_by_id(params[:id])
+          if @member
+            phone = @coach.phone + ";"
+            @member.update_attributes(apply_coach:@member.apply_coach.to_s.split(/#{phone}/).first)
+            
+            present @member
+          else
+            error!({"error" => "ID错误。", "status" => "f" }, 400)
+          end
+        end
 
       end
     end
