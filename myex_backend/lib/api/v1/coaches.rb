@@ -215,6 +215,39 @@ module API
           end
         end
 
+        desc "Find members information"
+        post 'find_member' do
+          age_less = params[:member][:age_less] || ""
+          if age_less.empty?
+            age_less = 100
+          end
+          @members = Member.where("nickname like ?
+                                                    AND name like ?
+                                                    AND province like ?
+                                                    AND city like ?
+                                                    AND district like ?
+                                                    AND street like ?
+                                                    AND email like ?
+                                                    AND phone like ?
+                                                    AND gender like ?
+                                                    AND profession like ?
+                                                    AND age >= ?
+                                                    AND age <= ?",
+                                                    "%#{params[:member][:nickname]}%",
+                                                    "%#{params[:member][:name]}%",
+                                                    "%#{params[:member][:province]}%",
+                                                   "%#{params[:member][:city]}%",
+                                                   "%#{params[:member][:district]}%",
+                                                   "%#{params[:member][:street]}%",
+                                                   "%#{params[:member][:email]}%",
+                                                   "%#{params[:member][:phone]}%",
+                                                   "%#{params[:member][:gender]}%",
+                                                   "%#{params[:member][:profession]}%",
+                                                   "#{params[:member][:age_greater]}",
+                                                   age_less)
+          present @members
+        end
+
       end
     end
   end

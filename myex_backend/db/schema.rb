@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141110142438) do
+ActiveRecord::Schema.define(:version => 20141114102051) do
 
   create_table "actions", :force => true do |t|
     t.string   "kind"
@@ -160,7 +160,7 @@ ActiveRecord::Schema.define(:version => 20141110142438) do
     t.string   "nickname",           :default => ""
     t.string   "name",               :default => ""
     t.string   "gender",             :default => ""
-    t.integer  "age"
+    t.integer  "age",                :default => 0
     t.string   "profession",         :default => ""
     t.string   "province",           :default => ""
     t.string   "city",               :default => ""
