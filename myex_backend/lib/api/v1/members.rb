@@ -236,7 +236,19 @@ module API
           if !@member.have_coach
             error!({"error" => "会员没有关联的私教。", "status" => "f" }, 400)
           else
-            @member.update_attributes(coach_id:nil, have_coach:false, grade:nil, grade_time:nil)
+            @coach = Coach.find_by_id(params[:id])
+            if !@coach
+              error!({"error" => "教练ID错误。", "status" => "f" }, 400)
+            end
+            phone = current_coach.phone + ";"
+            @member.update_attributes(coach_id:nil,
+                                                                have_coach:false,
+                                                                grade:nil,
+                                                                grade_time:nil,
+                                                                accuracy_grade:0.0,
+                                                                appetency_grade:0.0,
+                                                                professional_grade:0.0,
+                                                                apply_coach:@member.apply_coach.to_s.split(/#{phone}/).first)
             sign_in_member @member
             present @member
           end
@@ -340,7 +352,7 @@ module API
             input = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value.to_s + I18n.t('.jpush.config.master_secret_coach').to_s
             md5 = Digest::MD5.hexdigest(input)
             send_description = "申请关联教练"
-            n_content = "会员：#{@member.name}，手机号：#{@member.phone}，申请关联教练。"
+            n_content = "会员：#{@member.name}，手机号：#{@member.phone}，同意关联教练。"
             n_extras = Hash[:type => "message"]
             msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
             output = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
@@ -368,6 +380,25 @@ module API
           if @member
             phone = @coach.phone + ";"
             @member.update_attributes(apply_coach:@member.apply_coach.to_s.split(/#{phone}/).first)
+            sendno = Time.now.to_i
+            receiver_value = @coach.phone.to_s
+            input = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value.to_s + I18n.t('.jpush.config.master_secret_coach').to_s
+            md5 = Digest::MD5.hexdigest(input)
+            send_description = "申请关联教练"
+            n_content = "会员：#{@member.name}，手机号：#{@member.phone}，拒绝关联教练。"
+            n_extras = Hash[:type => "message"]
+            msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
+            output = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
+                                                            :sendno => sendno,
+                                                            :app_key => I18n.t('.jpush.config.app_key_coach'),
+                                                            :receiver_type => I18n.t('.jpush.config.receiver_type'),
+                                                            :receiver_value => receiver_value,
+                                                            :verification_code => md5,
+                                                            :msg_type => I18n.t('.jpush.config.msg_type'),
+                                                            :msg_content => msg_content,
+                                                            :send_description => send_description,
+                                                            :time_to_live => I18n.t('.jpush.config.time_to_live'),
+                                                            :platform => I18n.t('.jpush.config.platform'))
             
             present @member
           else
