@@ -101,21 +101,21 @@ module API
         end
 
         desc "Member get all waiting events"
-        get 'member_waiting_events' do
+        post 'member_waiting_events' do
           var = current_member.phone + ";"
-          @events = Event.where("member_phone like ? AND member_approved not like ?", "%#{var}%", "%#{var}%")
+          @events = Event.where("member_phone like ? AND member_approved not like ? AND date >= ? AND date <= ?", "%#{var}%", "%#{var}%", params[:begin_date], params[:end_date])
         end
 
         desc "Member get all approved events"
-        get 'member_approved_events' do
+        post 'member_approved_events' do
           var = current_member.phone + ";"
-          @events = Event.where("member_phone like ? AND member_approved like ?", "%#{var}%", "%#{var}%")
+          @events = Event.where("member_phone like ? AND member_approved like ? AND date >= ? AND date <= ?", "%#{var}%", "%#{var}%", params[:begin_date], params[:end_date])
         end
 
         desc "Member get all events"
-        get 'member_all_events' do
+        post 'member_all_events' do
           var = current_member.phone + ";"
-          @events = Event.where("member_phone like ?", "%#{var}%")
+          @events = Event.where("member_phone like ? AND date >= ? AND date <= ?", "%#{var}%", params[:begin_date], params[:end_date])
         end
 
         desc "Coach update  a event."
@@ -284,18 +284,18 @@ module API
         end
 
         desc "Coach get all waiting events"
-        get 'coach_waiting_events' do
-          @events = Event.where("coach_id = ? AND  coach_approved = ?", current_coach.id, false)
+        post 'coach_waiting_events' do
+          @events = Event.where("coach_id = ? AND  coach_approved = ? AND date >= ? AND date <= ?", current_coach.id, false, params[:begin_date], params[:end_date])
         end
 
         desc "Coach get all approved events"
-        get 'coach_approved_events' do
-          @events = Event.where("coach_id = ? AND  coach_approved = ?", current_coach.id, true)
+        post 'coach_approved_events' do
+          @events = Event.where("coach_id = ? AND  coach_approved = ? AND date >= ? AND date <= ?", current_coach.id, true, params[:begin_date], params[:end_date])
         end
 
         desc "Coach get all events"
-        get 'coach_all_events' do
-          @events = Event.where("coach_id = ?", current_coach.id)
+        post 'coach_all_events' do
+          @events = Event.where("coach_id = ? AND date >= ? AND date <= ?", current_coach.id, params[:begin_date], params[:end_date])
         end
 
         desc "Get a event infomation"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141110101650) do
+ActiveRecord::Schema.define(:version => 20141110142438) do
 
   create_table "actions", :force => true do |t|
     t.string   "kind"
@@ -149,7 +149,7 @@ ActiveRecord::Schema.define(:version => 20141110101650) do
     t.text     "drug_reason"
     t.text     "disease_history"
     t.float    "sleep_amount"
-    t.datetime "sleep_time"
+    t.string   "sleep_time"
     t.string   "sleep_quality"
     t.string   "self_assessment"
     t.datetime "created_at",      :null => false
