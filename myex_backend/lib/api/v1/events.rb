@@ -119,20 +119,29 @@ module API
 
         desc "Member get all waiting events"
         post 'member_waiting_events' do
-          var = current_member.phone + ";"
-          @events = Event.where("member_phone like ? AND member_approved not like ? AND date >= ? AND date <= ?", "%#{var}%", "%#{var}%", params[:begin_date], params[:end_date])
+          var = current_member.phone
+          @events1 = Event.where("member_phone like ? AND member_approved not like ? AND begin_date >= ? AND end_date <= ? AND whether_weekly = ?", "%#{var}%", "%#{var}%", params[:begin_date], params[:end_date], true)
+          @events2 = Event.where("member_phone like ? AND member_approved not like ? AND date >= ? AND date <= ?", "%#{var}%", "%#{var}%", params[:begin_date], params[:end_date])
+          @event = @events1 + @events2
+          present @event
         end
 
         desc "Member get all approved events"
         post 'member_approved_events' do
-          var = current_member.phone + ";"
-          @events = Event.where("member_phone like ? AND member_approved like ? AND date >= ? AND date <= ?", "%#{var}%", "%#{var}%", params[:begin_date], params[:end_date])
+          var = current_member.phone
+          @events1 = Event.where("member_phone like ? AND member_approved like ? AND begin_date >= ? AND end_date <= ? AND whether_weekly = ?", "%#{var}%", "%#{var}%", params[:begin_date], params[:end_date], true)
+          @events2 = Event.where("member_phone like ? AND member_approved like ? AND date >= ? AND date <= ?", "%#{var}%", "%#{var}%", params[:begin_date], params[:end_date])
+          @event = @events1 + @events2
+          present @event
         end
 
         desc "Member get all events"
         post 'member_all_events' do
-          var = current_member.phone + ";"
-          @events = Event.where("member_phone like ? AND date >= ? AND date <= ?", "%#{var}%", params[:begin_date], params[:end_date])
+          var = current_member.phone
+          @events1 = Event.where("member_phone like ? AND begin_date >= ? AND end_date <= ? AND whether_weekly = ?", "%#{var}%", params[:begin_date], params[:end_date], true)
+          @events2 = Event.where("member_phone like ? AND date >= ? AND date <= ?", "%#{var}%", params[:begin_date], params[:end_date])
+          @event = @events1 + @events2
+          present @event
         end
 
         desc "Coach update  a event."
@@ -334,17 +343,26 @@ module API
 
         desc "Coach get all waiting events"
         post 'coach_waiting_events' do
-          @events = Event.where("coach_id = ? AND  coach_approved = ? AND date >= ? AND date <= ?", current_coach.id, false, params[:begin_date], params[:end_date])
+          @events1 = Event.where("coach_id = ? AND  coach_approved = ? AND date >= ? AND date <= ?", current_coach.id, false, params[:begin_date], params[:end_date])
+          @events2 = Event.where("coach_id = ? AND  coach_approved = ? AND begin_date >= ? AND end_date <= ? AND whether_weekly = ?", current_coach.id, false, params[:begin_date], params[:end_date], true)
+          @event = @events1 + @events2
+          present @event
         end
 
         desc "Coach get all approved events"
         post 'coach_approved_events' do
-          @events = Event.where("coach_id = ? AND  coach_approved = ? AND date >= ? AND date <= ?", current_coach.id, true, params[:begin_date], params[:end_date])
+          @events1 = Event.where("coach_id = ? AND  coach_approved = ? AND begin_date >= ? AND end_date <= ? AND whether_weekly = ?", current_coach.id, true, params[:begin_date], params[:end_date], true)
+          @events2 = Event.where("coach_id = ? AND  coach_approved = ? AND date >= ? AND date <= ?", current_coach.id, true, params[:begin_date], params[:end_date])
+          @event = @events1 + @events2
+          present @event
         end
 
         desc "Coach get all events"
         post 'coach_all_events' do
-          @events = Event.where("coach_id = ? AND date >= ? AND date <= ?", current_coach.id, params[:begin_date], params[:end_date])
+          @events1 = Event.where("coach_id = ? AND begin_date >= ? AND end_date <= ? AND whether_weekly = ?", current_coach.id, params[:begin_date], params[:end_date], true)
+          @events2 = Event.where("coach_id = ? AND date >= ? AND date <= ?", current_coach.id, params[:begin_date], params[:end_date])
+          @event = @events1 + @events2
+          present @event
         end
 
         desc "Get a event infomation"
