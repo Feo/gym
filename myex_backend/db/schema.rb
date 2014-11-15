@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141114105133) do
+ActiveRecord::Schema.define(:version => 20141115130906) do
 
   create_table "actions", :force => true do |t|
     t.string   "kind"
@@ -136,6 +136,13 @@ ActiveRecord::Schema.define(:version => 20141114105133) do
     t.datetime "updated_at",                         :null => false
     t.string   "day",             :default => ""
     t.string   "submitter"
+    t.boolean  "monday",          :default => false
+    t.boolean  "tuesday",         :default => false
+    t.boolean  "wednesday",       :default => false
+    t.boolean  "thursday",        :default => false
+    t.boolean  "friday",          :default => false
+    t.boolean  "saturday",        :default => false
+    t.boolean  "sunday",          :default => false
   end
 
   create_table "member_habits", :force => true do |t|

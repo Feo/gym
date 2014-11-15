@@ -1,6 +1,7 @@
 #encoding: utf-8
 require 'net/http'
 require 'digest/md5'
+require 'pry'
 
 module API
   module V1
@@ -20,13 +21,21 @@ module API
           @conflict = false
           if @event.update_attributes(coach_id:current_coach.id, coach_approved:true, submitter:current_coach.phone)
             if @event.whether_weekly
-              @event.week.split(";").each do |week|
-                if Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND week like ?  AND coach_id = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{week}%", current_coach.id).count > 1
-                  @conflict = true
-                end
+              if params[:event][:monday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND monday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, params[:event][:monday]).count > 1
+                @conflict = true
+              elsif params[:event][:tuesday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND tuesday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, params[:event][:tuesday]).count > 1
+                @conflict = true
+              elsif params[:event][:wednesday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND wednesday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, params[:event][:wednesday]).count > 1
+                @conflict = true
+              elsif params[:event][:thursday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND thursday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, params[:event][:thursday]).count > 1
+                @conflict = true
+              elsif params[:event][:friday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND friday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, params[:event][:friday]).count > 1
+                @conflict = true
+              elsif params[:event][:saturday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND saturday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, params[:event][:saturday]).count > 1
+                @conflict = true
+              elsif params[:event][:sunday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND sunday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, params[:event][:sunday]).count > 1
+                @conflict = true
               end
-            elsif !@event.whether_weekly && !Event.where("week like ? AND time = ? AND begin_date <= ? AND end_date >= ? AND coach_id = ?", "%#{@event.day}%", @event.time, @event.date, @event.date, current_coach.id).empty?
-              @conflict = true
             elsif !@event.whether_weekly && Event.where("date = ? AND time = ? AND coach_id = ?", @event.date, @event.time, current_coach.id).count > 1
               @conflict = true
             end
@@ -66,13 +75,21 @@ module API
             phone = current_member.phone + ";"
             @event.update_attributes(member_approved:member_approved)
             if @event.whether_weekly
-              @event.week.split(";").each do |week|
-                if Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND week like ?  AND member_approved like ?",true, @event.time, @event.end_date, @event.begin_date, "%#{week}%", "%#{phone}%").count > 1
-                  @conflict = true
-                end
+              if @event.monday && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND monday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", true).count > 1
+                @conflict = true
+              elsif @event.tuesday && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND tuesday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", true).count > 1
+                @conflict = true
+              elsif @event.wednesday && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND wednesday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", true).count > 1
+                @conflict = true
+              elsif @event.thursday && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND thursday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", true).count > 1
+                @conflict = true
+              elsif @event.friday && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND friday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", true).count > 1
+                @conflict = true
+              elsif @event.saturday && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND saturday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", true).count > 1
+                @conflict = true
+              elsif @event.sunday && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND sunday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", true).count > 1
+                @conflict = true
               end
-            elsif !@event.whether_weekly && !Event.where("week like ? AND time = ? AND begin_date <= ? AND end_date >= ? AND member_approved like ?", "%#{@event.day}%", @event.time, @event.date, @event.date, "%#{phone}%").empty?
-              @conflict = true
             elsif !@event.whether_weekly && Event.where("date = ? AND time = ? AND member_approved like ?", @event.date, @event.time, "%#{phone}%").count > 1
               @conflict = true
             end
@@ -126,13 +143,21 @@ module API
             error!({"error" => "ID错误。", "status" => "f" }, 400)
           elsif @event.update_attributes(params[:event])
             if @event.whether_weekly
-              @event.week.split(";").each do |week|
-                if Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND week like ?  AND coach_id = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{week}%", current_coach.id).count > 1
-                  @conflict = true
-                end
+              if params[:event][:monday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND monday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, params[:event][:monday]).count > 1
+                @conflict = true
+              elsif params[:event][:tuesday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND tuesday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, params[:event][:tuesday]).count > 1
+                @conflict = true
+              elsif params[:event][:wednesday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND wednesday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, params[:event][:wednesday]).count > 1
+                @conflict = true
+              elsif params[:event][:thursday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND thursday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, params[:event][:thursday]).count > 1
+                @conflict = true
+              elsif params[:event][:friday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND friday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, params[:event][:friday]).count > 1
+                @conflict = true
+              elsif params[:event][:saturday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND saturday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, params[:event][:saturday]).count > 1
+                @conflict = true
+              elsif params[:event][:sunday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND sunday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, params[:event][:sunday]).count > 1
+                @conflict = true
               end
-            elsif !@event.whether_weekly && !Event.where("week like ? AND time = ? AND begin_date <= ? AND end_date >= ? AND coach_id = ?", "%#{@event.day}%", @event.time, @event.date, @event.date, current_coach.id).empty?
-              @conflict = true
             elsif !@event.whether_weekly && Event.where("date = ? AND time = ? AND coach_id = ?", @event.date, @event.time, current_coach.id).count > 1
               @conflict = true
             end
@@ -153,13 +178,21 @@ module API
             member_phone = params[:event][:member_phone] + current_member.phone + ";"
             @event.update_attributes(member_phone:member_phone)
             if @event.whether_weekly
-              @event.week.split(";").each do |week|
-                if Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND week like ?  AND member_approved like ?",true, @event.time, @event.end_date, @event.begin_date, "%#{week}%", "%#{phone}%").count > 1
-                  @conflict = true
-                end
+              if params[:event][:monday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND monday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", params[:event][:monday]).count > 1
+                @conflict = true
+              elsif params[:event][:tuesday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND tuesday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", params[:event][:tuesday]).count > 1
+                @conflict = true
+              elsif params[:event][:wednesday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND wednesday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", params[:event][:wednesday]).count > 1
+                @conflict = true
+              elsif params[:event][:thursday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND thursday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", params[:event][:thursday]).count > 1
+                @conflict = true
+              elsif params[:event][:friday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND friday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", params[:event][:friday]).count > 1
+                @conflict = true
+              elsif params[:event][:saturday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND saturday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", params[:event][:saturday]).count > 1
+                @conflict = true
+              elsif params[:event][:sunday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND sunday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", params[:event][:sunday]).count > 1
+                @conflict = true
               end
-            elsif !@event.whether_weekly && !Event.where("week like ? AND time = ? AND begin_date <= ? AND end_date >= ? AND member_approved like ?", "%#{@event.day}%", @event.time, @event.date, @event.date, "%#{phone}%").empty?
-              @conflict = true
             elsif !@event.whether_weekly && Event.where("date = ? AND time = ? AND member_approved like ?", @event.date, @event.time, "%#{phone}%").count > 1
               @conflict = true
             end
@@ -209,13 +242,21 @@ module API
           phone = current_member.phone + ";"
           if @event.update_attributes(member_phone:member_phone, member_approved:current_member.phone+";", submitter:current_member.phone)
             if @event.whether_weekly
-              @event.week.split(";").each do |week|
-                if Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND week like ?  AND member_approved like ?",true, @event.time, @event.end_date, @event.begin_date, "%#{week}%", "%#{phone}%").count > 1
-                  @conflict = true
-                end
+              if params[:event][:monday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND monday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", params[:event][:monday]).count > 1
+                @conflict = true
+              elsif params[:event][:tuesday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND tuesday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", params[:event][:tuesday]).count > 1
+                @conflict = true
+              elsif params[:event][:wednesday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND wednesday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", params[:event][:wednesday]).count > 1
+                @conflict = true
+              elsif params[:event][:thursday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND thursday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", params[:event][:thursday]).count > 1
+                @conflict = true
+              elsif params[:event][:friday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND friday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", params[:event][:friday]).count > 1
+                @conflict = true
+              elsif params[:event][:saturday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND saturday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", params[:event][:saturday]).count > 1
+                @conflict = true
+              elsif params[:event][:sunday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND sunday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", params[:event][:sunday]).count > 1
+                @conflict = true
               end
-            elsif !@event.whether_weekly && !Event.where("week like ? AND time = ? AND begin_date <= ? AND end_date >= ? AND member_approved like ?", "%#{@event.day}%", @event.time, @event.date, @event.date, "%#{phone}%").empty?
-              @conflict = true
             elsif !@event.whether_weekly && Event.where("date = ? AND time = ? AND member_approved like ?", @event.date, @event.time, "%#{phone}%").count > 1
               @conflict = true
             end
@@ -255,13 +296,21 @@ module API
             error!({"error" => "ID错误。", "status" => "f" }, 400)
           elsif @event.update_attributes(coach_approved:true)
             if @event.whether_weekly
-              @event.week.split(";").each do |week|
-                if Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND week like ?  AND coach_id = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{week}%", current_coach.id).count > 1
-                  @conflict = true
-                end
+              if @event.monday && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND monday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, true).count > 1
+                @conflict = true
+              elsif @event.tuesday && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND tuesday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, true).count > 1
+                @conflict = true
+              elsif @event.wednesday && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND wednesday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, true).count > 1
+                @conflict = true
+              elsif @event.thursday && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND thursday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, true).count > 1
+                @conflict = true
+              elsif @event.friday && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND friday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, true).count > 1
+                @conflict = true
+              elsif @event.saturday && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND saturday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, true).count > 1
+                @conflict = true
+              elsif @event.sunday && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND sunday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, true).count > 1
+                @conflict = true
               end
-            elsif !@event.whether_weekly && !Event.where("week like ? AND time = ? AND begin_date <= ? AND end_date >= ? AND coach_id = ?", "%#{@event.day}%", @event.time, @event.date, @event.date, current_coach.id).empty?
-              @conflict = true
             elsif !@event.whether_weekly && Event.where("date = ? AND time = ? AND coach_id = ?", @event.date, @event.time, current_coach.id).count > 1
               @conflict = true
             end
