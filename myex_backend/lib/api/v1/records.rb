@@ -46,7 +46,7 @@ module API
               end
               member.update_attributes(score:score, level:level)
               if !current_member.nil?
-                sign_in_member @member
+                sign_in_member member
               end
 
               present [@record, @actions, member]
