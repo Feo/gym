@@ -1,3 +1,7 @@
+#encoding: utf-8
+require 'net/http'
+require 'digest/md5'
+
 module API
   module V1
     class Coaches < Grape::API
@@ -49,6 +53,20 @@ module API
             present @coach
           else
             error!({"error" => "激活账户失败。", "status" => "f" }, 400)
+          end
+        end
+
+        desc "Reset password"
+        post 'reset_password' do
+          @coach = Coach.find_by_phone(params[:phone])
+          if @coach.try(:token) != params[:token]
+            error!({"error" => "手机号码或验证码错误。", "status" => "f" }, 400)
+          elsif params[:password].empty? || params[:password] != params[:password_confirmation]
+            error!({"error" => "密码修改错误。", "status" => "f" }, 400)
+          elsif @coach.update_attributes(password:params[:password], password_confirmation:params[:password_confirmation])
+            present @coach
+          else
+            error!({"error" => "密码修改错误。", "status" => "f" }, 400)
           end
         end
 
@@ -131,6 +149,25 @@ module API
           @member = Member.where("coach_id = ? AND have_coach = ? AND id = ?", current_coach.id, false, params[:id]).first
           if @member
             @member.update_attributes(have_coach:true)
+            sendno = Time.now.to_i
+            receiver_value = @member.phone.to_s
+            input = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value.to_s + I18n.t('.jpush.config.master_secret_member').to_s
+            md5 = Digest::MD5.hexdigest(input)
+            send_description = "批准关联申请"
+            n_content = "教练：#{@member.name}，手机号：#{@member.phone}，已批准关联申请。"
+            n_extras = Hash[:type => "message"]
+            msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
+            output = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
+                                                            :sendno => sendno,
+                                                            :app_key => I18n.t('.jpush.config.app_key_member'),
+                                                            :receiver_type => I18n.t('.jpush.config.receiver_type'),
+                                                            :receiver_value => receiver_value,
+                                                            :verification_code => md5,
+                                                            :msg_type => I18n.t('.jpush.config.msg_type'),
+                                                            :msg_content => msg_content,
+                                                            :send_description => send_description,
+                                                            :time_to_live => I18n.t('.jpush.config.time_to_live'),
+                                                            :platform => I18n.t('.jpush.config.platform'))
             present @member
           else
             error!({"error" => "ID错误。", "status" => "f" }, 400)
@@ -142,6 +179,25 @@ module API
           @member = Member.where("coach_id = ? AND have_coach = ? AND id = ?", current_coach.id, false, params[:id]).first
           if @member
             @member.update_attributes(coach_id:nil)
+            sendno = Time.now.to_i
+            receiver_value = @member.phone.to_s
+            input = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value.to_s + I18n.t('.jpush.config.master_secret_member').to_s
+            md5 = Digest::MD5.hexdigest(input)
+            send_description = "拒绝关联申请"
+            n_content = "教练：#{@member.name}，手机号：#{@member.phone}，拒绝关联申请。"
+            n_extras = Hash[:type => "message"]
+            msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
+            output = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
+                                                            :sendno => sendno,
+                                                            :app_key => I18n.t('.jpush.config.app_key_member'),
+                                                            :receiver_type => I18n.t('.jpush.config.receiver_type'),
+                                                            :receiver_value => receiver_value,
+                                                            :verification_code => md5,
+                                                            :msg_type => I18n.t('.jpush.config.msg_type'),
+                                                            :msg_content => msg_content,
+                                                            :send_description => send_description,
+                                                            :time_to_live => I18n.t('.jpush.config.time_to_live'),
+                                                            :platform => I18n.t('.jpush.config.platform'))
             present @member
           else
             error!({"error" => "ID错误。", "status" => "f" }, 400)
@@ -152,12 +208,93 @@ module API
         post 'delete_member' do
           @member = Member.where("coach_id = ? AND have_coach = ? AND id = ?", current_coach.id, true, params[:id]).first
           if @member
-            @member.update_attributes(coach_id:nil, have_coach:false)
+            phone = current_coach.phone + ";"
+            @member.update_attributes(coach_id:nil,
+                                                                have_coach:false,
+                                                                grade:nil,
+                                                                grade_time:nil,
+                                                                accuracy_grade:0.0,
+                                                                appetency_grade:0.0,
+                                                                professional_grade:0.0,
+                                                                apply_coach:@member.apply_coach.to_s.split(/#{phone}/).first)
             present @member
           else
             error!({"error" => "ID错误。", "status" => "f" }, 400)
           end
         end
+
+        desc "Find members information"
+        post 'find_member' do
+          age_less = params[:member][:age_less] || ""
+          if age_less.empty?
+            age_less = 100
+          end
+          @members = Member.where("nickname like ?
+                                                    AND name like ?
+                                                    AND province like ?
+                                                    AND city like ?
+                                                    AND district like ?
+                                                    AND street like ?
+                                                    AND email like ?
+                                                    AND phone like ?
+                                                    AND gender like ?
+                                                    AND profession like ?
+                                                    AND age >= ?
+                                                    AND age <= ?",
+                                                    "%#{params[:member][:nickname]}%",
+                                                    "%#{params[:member][:name]}%",
+                                                    "%#{params[:member][:province]}%",
+                                                   "%#{params[:member][:city]}%",
+                                                   "%#{params[:member][:district]}%",
+                                                   "%#{params[:member][:street]}%",
+                                                   "%#{params[:member][:email]}%",
+                                                   "%#{params[:member][:phone]}%",
+                                                   "%#{params[:member][:gender]}%",
+                                                   "%#{params[:member][:profession]}%",
+                                                   "#{params[:member][:age_greater]}",
+                                                   age_less)
+          present @members
+        end
+
+        desc "Apply a coach"
+        post 'apply_member' do
+          @member = Member.find_by_id(params[:id])
+          @coach = current_coach
+          if @member.have_coach
+            error!({"error" => "会员已有私教。", "status" => "f" }, 400)
+          elsif @member
+            if @member.apply_coach.to_s.include? @coach.phone
+              error!({"error" => "已请求关联。", "status" => "f" }, 400)
+            end
+            apply_coach = @member.apply_coach.to_s + @coach.phone + ";"
+            @member.update_attributes(apply_coach:apply_coach)
+            sign_in_coach @coach
+            sendno = Time.now.to_i
+            receiver_value = @member.phone.to_s
+            input = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value.to_s + I18n.t('.jpush.config.master_secret_member').to_s
+            md5 = Digest::MD5.hexdigest(input)
+            send_description = "申请关联会员"
+            n_content = "教练：#{@coach.name}，手机号：#{@coach.phone}，申请关联会员。"
+            n_extras = Hash[:type => "message"]
+            msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
+            output = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
+                                                            :sendno => sendno,
+                                                            :app_key => I18n.t('.jpush.config.app_key_member'),
+                                                            :receiver_type => I18n.t('.jpush.config.receiver_type'),
+                                                            :receiver_value => receiver_value,
+                                                            :verification_code => md5,
+                                                            :msg_type => I18n.t('.jpush.config.msg_type'),
+                                                            :msg_content => msg_content,
+                                                            :send_description => send_description,
+                                                            :time_to_live => I18n.t('.jpush.config.time_to_live'),
+                                                            :platform => I18n.t('.jpush.config.platform'))
+            
+            present @member
+          else
+            error!({"error" => "会员ID错误。", "status" => "f" }, 400)
+          end
+        end
+
 
       end
     end

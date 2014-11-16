@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 module API
   module V1
     class Memberhabits < Grape::API
@@ -7,7 +9,7 @@ module API
       resource :memberhabits do
 
         before do
-          authenticate_member!
+          authenticate!
         end
 
         desc "Get member habit table."

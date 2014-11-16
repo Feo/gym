@@ -13,3 +13,18 @@
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
+
+$(document).ready(function() {
+    $('#select_all').click(function(event) {  //on click 
+        if(this.checked) { // check select status
+            $('.box').each(function() { //loop through each checkbox
+                this.checked = true;  //select all checkboxes with class "box"               
+            });
+        }else{
+            $('.box').each(function() { //loop through each checkbox
+                this.checked = false; //deselect all checkboxes with class "box"                       
+            });         
+        }
+    });
+    
+});

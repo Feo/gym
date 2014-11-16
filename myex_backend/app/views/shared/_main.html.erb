@@ -1,0 +1,13 @@
+<div class="g_header">
+    <div class="inner">
+        <h1 style="display: none;"><%= image_tag "slogo.png" %> 51练 - <span>管理员客户端</span></h1>
+        <h1><strong>51练</strong> 管理员客户端</h1>
+        <p class="user_info">欢迎，<%= current_admin.name %> , <%= link_to "退出登录", logout_path, :method => "delete", :confirm => "确定要退出登录吗？" %></p>
+        <p class="login_time">上次登录时间：<%= current_admin.last_login.try(:strftime, "%Y.%m.%d %H:%M") %></p>
+        <ul class="nav">
+            <li><%= link_to "发送消息", message_index_administrator_path(current_admin) %></li>
+            <li class="current"><%= link_to "管理员信息", administrator_path(current_admin) %></li>
+        </ul>
+        </ul>
+    </div>
+</div>

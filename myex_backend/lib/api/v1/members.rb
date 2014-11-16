@@ -1,3 +1,7 @@
+#encoding: utf-8
+require 'net/http'
+require 'digest/md5'
+
 module API
   module V1
     class Members < Grape::API
@@ -62,6 +66,20 @@ module API
             present @member
           else
             error!({"error" => "激活账户失败。", "status" => "f" }, 400)
+          end
+        end
+
+        desc "Reset password"
+        post 'reset_password' do
+          @member = Member.find_by_phone(params[:phone])
+          if @member.try(:token) != params[:token]
+            error!({"error" => "手机号码或验证码错误。", "status" => "f" }, 400)
+          elsif params[:password].empty? || params[:password] != params[:password_confirmation]
+            error!({"error" => "密码修改错误。", "status" => "f" }, 400)
+          elsif @member.update_attributes(password:params[:password], password_confirmation:params[:password_confirmation])
+            present @member
+          else
+            error!({"error" => "密码修改错误。", "status" => "f" }, 400)
           end
         end
 
@@ -187,6 +205,25 @@ module API
           elsif @coach
             @member.update_attributes(coach_id:params[:id])
             sign_in_member @member
+            sendno = Time.now.to_i
+            receiver_value = @coach.phone.to_s
+            input = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value.to_s + I18n.t('.jpush.config.master_secret_coach').to_s
+            md5 = Digest::MD5.hexdigest(input)
+            send_description = "申请关联教练"
+            n_content = "会员：#{@member.name}，手机号：#{@member.phone}，申请关联教练。"
+            n_extras = Hash[:type => "message"]
+            msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
+            output = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
+                                                            :sendno => sendno,
+                                                            :app_key => I18n.t('.jpush.config.app_key_coach'),
+                                                            :receiver_type => I18n.t('.jpush.config.receiver_type'),
+                                                            :receiver_value => receiver_value,
+                                                            :verification_code => md5,
+                                                            :msg_type => I18n.t('.jpush.config.msg_type'),
+                                                            :msg_content => msg_content,
+                                                            :send_description => send_description,
+                                                            :time_to_live => I18n.t('.jpush.config.time_to_live'),
+                                                            :platform => I18n.t('.jpush.config.platform'))
             present @member
           else
             error!({"error" => "教练ID错误。", "status" => "f" }, 400)
@@ -199,7 +236,19 @@ module API
           if !@member.have_coach
             error!({"error" => "会员没有关联的私教。", "status" => "f" }, 400)
           else
-            @member.update_attributes(coach_id:nil, have_coach:false, grade:nil, grade_time:nil)
+            @coach = Coach.find_by_id(params[:id])
+            if !@coach
+              error!({"error" => "教练ID错误。", "status" => "f" }, 400)
+            end
+            phone = current_coach.phone + ";"
+            @member.update_attributes(coach_id:nil,
+                                                                have_coach:false,
+                                                                grade:nil,
+                                                                grade_time:nil,
+                                                                accuracy_grade:0.0,
+                                                                appetency_grade:0.0,
+                                                                professional_grade:0.0,
+                                                                apply_coach:@member.apply_coach.to_s.split(/#{phone}/).first)
             sign_in_member @member
             present @member
           end
@@ -231,19 +280,129 @@ module API
           @member = current_member
           if !@member.have_coach
             error!({"error" => "会员没有关联的私教。", "status" => "f" }, 400)
-          elsif @member.grade_time && Time.now - @member.grade_time < 1.month
+          elsif false#@member.grade_time && Time.now - @member.grade_time < 1.month
             error!({"error" => "一个月内只能修改一次。", "status" => "f" }, 400)
           else
-            @member.update_attributes(grade:params[:grade], grade_time:Time.now)
+            @member.update_attributes(accuracy_grade:params[:accuracy_grade],
+                                                                appetency_grade:params[:appetency_grade],
+                                                                professional_grade:params[:professional_grade],
+                                                                grade:(params[:accuracy_grade] + params[:appetency_grade] + params[:professional_grade]),
+                                                                grade_time:Time.now)
             @members = Member.where("have_coach = ? AND coach_id = ? AND grade is not null", true, @member.coach_id)
-            total_grade = 0
+            total_accuracy_grade = 0
+            total_appetency_grade = 0
+            total_professional_grade = 0
             @members.each do |member|
-              total_grade = total_grade + member.grade
+              total_accuracy_grade = total_accuracy_grade + member.accuracy_grade
+              total_appetency_grade = total_appetency_grade + member.appetency_grade
+              total_professional_grade = total_professional_grade + member.professional_grade
             end
             @coach = Coach.find_by_id(@member.coach_id)
-            @coach.update_attributes(grade:((total_grade/@members.count).round(1)))
+            coach_accuracy_grade = (total_accuracy_grade/@members.count).round(1)
+            coach_appetency_grade = (total_appetency_grade/@members.count).round(1)
+            coach_professional_grade = (total_professional_grade/@members.count).round(1)
+            @coach.update_attributes(accuracy_grade:coach_accuracy_grade,
+                                                            appetency_grade:coach_appetency_grade,
+                                                            professional_grade:coach_professional_grade,
+                                                            grade:(coach_accuracy_grade + coach_appetency_grade + coach_professional_grade))
+
+            coach_count = Coach.where("grade != ?", 0).count
+            level1 =  (coach_count * 0.1).ceil
+            level2 =  (coach_count * 0.3).ceil
+            level3 =  (coach_count * 0.7).ceil
+            level4 =  (coach_count * 0.9).ceil
+            level5 =  (coach_count * 1).ceil
+            if Coach.where("grade != ?", 0).order("grade DESC").first(level1).include? @coach
+              level = "1"
+            elsif Coach.where("grade != ?", 0).order("grade DESC").first(level2).include? @coach
+              level = "2"
+            elsif Coach.where("grade != ?", 0).order("grade DESC").first(level3).include? @coach
+              level = "3"
+            elsif Coach.where("grade != ?", 0).order("grade DESC").first(level4).include? @coach
+              level = "4"
+            elsif Coach.where("grade != ?", 0).order("grade DESC").first(level5).include? @coach
+              level = "5"
+            end
+            @coach.update_attributes(level:level)
+
             sign_in_member @member
             present [@member, @coach]
+          end
+        end
+
+        desc "Get apply coach list"
+        get 'apply_list' do
+          @coaches = []
+          if !current_member.apply_coach.to_s.empty?
+            current_member.apply_coach.to_s.split(/;/).each do |phone|
+              @coaches << Coach.find_by_phone(phone)
+            end
+          end
+          present @coaches
+        end
+
+        desc "Approve coach's apply."
+        post 'approve_apply' do
+          @member = current_member
+          @coach = Coach.find_by_id(params[:id])
+          if !@member.have_coach
+            @member.update_attributes(have_coach:true, coach_id:@coach.id)
+            sendno = Time.now.to_i
+            receiver_value = @coach.phone.to_s
+            input = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value.to_s + I18n.t('.jpush.config.master_secret_coach').to_s
+            md5 = Digest::MD5.hexdigest(input)
+            send_description = "申请关联教练"
+            n_content = "会员：#{@member.name}，手机号：#{@member.phone}，同意关联教练。"
+            n_extras = Hash[:type => "message"]
+            msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
+            output = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
+                                                            :sendno => sendno,
+                                                            :app_key => I18n.t('.jpush.config.app_key_coach'),
+                                                            :receiver_type => I18n.t('.jpush.config.receiver_type'),
+                                                            :receiver_value => receiver_value,
+                                                            :verification_code => md5,
+                                                            :msg_type => I18n.t('.jpush.config.msg_type'),
+                                                            :msg_content => msg_content,
+                                                            :send_description => send_description,
+                                                            :time_to_live => I18n.t('.jpush.config.time_to_live'),
+                                                            :platform => I18n.t('.jpush.config.platform'))
+            present @member
+          else
+            error!({"error" => "会员已关联教练。", "status" => "f" }, 400)
+          end
+        end
+        
+
+        desc "Refuse coach's apply."
+        post 'refuse_apply' do
+          @member = current_member
+          @coach = Coach.find_by_id(params[:id])
+          if @member
+            phone = @coach.phone + ";"
+            @member.update_attributes(apply_coach:@member.apply_coach.to_s.split(/#{phone}/).first)
+            sendno = Time.now.to_i
+            receiver_value = @coach.phone.to_s
+            input = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value.to_s + I18n.t('.jpush.config.master_secret_coach').to_s
+            md5 = Digest::MD5.hexdigest(input)
+            send_description = "申请关联教练"
+            n_content = "会员：#{@member.name}，手机号：#{@member.phone}，拒绝关联教练。"
+            n_extras = Hash[:type => "message"]
+            msg_content = Hash[:n_content => n_content, :n_extras => n_extras].to_json
+            output = Net::HTTP.post_form(URI.parse(I18n.t('.jpush.config.uri')),
+                                                            :sendno => sendno,
+                                                            :app_key => I18n.t('.jpush.config.app_key_coach'),
+                                                            :receiver_type => I18n.t('.jpush.config.receiver_type'),
+                                                            :receiver_value => receiver_value,
+                                                            :verification_code => md5,
+                                                            :msg_type => I18n.t('.jpush.config.msg_type'),
+                                                            :msg_content => msg_content,
+                                                            :send_description => send_description,
+                                                            :time_to_live => I18n.t('.jpush.config.time_to_live'),
+                                                            :platform => I18n.t('.jpush.config.platform'))
+            
+            present @member
+          else
+            error!({"error" => "ID错误。", "status" => "f" }, 400)
           end
         end
 

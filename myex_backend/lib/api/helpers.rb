@@ -1,3 +1,5 @@
+#encoding: utf-8
+
 module API
   module APIHelpers
     def current_coach
@@ -40,6 +42,11 @@ module API
 
     def authenticate_member!
       error!('未登录。', 401) unless current_member
+    end
+
+
+    def authenticate!
+      error!('未登录。', 401) unless (current_member || current_coach)
     end
   end
 end

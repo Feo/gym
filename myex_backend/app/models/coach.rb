@@ -1,5 +1,5 @@
 class Coach < ActiveRecord::Base
-  attr_accessible :nickname, :name, :province, :city, :district, :phone, :email, :organization, :notification, :open_question, :one_to_one_teaching, :one_to_many_teaching, :password, :password_confirmation, :profession, :experience, :street, :qq, :weixin, :grade, :gender, :age, :token, :activated
+  attr_accessible :nickname, :name, :province, :city, :district, :phone, :email, :organization, :notification, :open_question, :one_to_one_teaching, :one_to_many_teaching, :password, :password_confirmation, :profession, :experience, :street, :qq, :weixin, :grade, :gender, :age, :token, :activated, :photo_url, :accuracy_grade, :appetency_grade, :professional_grade, :level
   has_secure_password
 
   before_save :create_remember_token
