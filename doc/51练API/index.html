@@ -1,0 +1,528 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr" class="client-nojs">
+<head>
+<title>API文档 V1</title>
+<meta charset="UTF-8" />
+<link rel="stylesheet" href="sources/wiki_main.css" media="screen" />
+</head>
+<body class="mediawiki ltr sitedir-ltr B_wiki_main  skin-monobook">
+
+<!--主内容开始-->
+<div class="wiki_wrap">
+  <div class="wiki_con">
+    <div class="con_box">
+      <div class="header noprint">
+        <img src="sources/1.png">
+      </div>
+      <div class="wiki_body">
+        <div class="wiki_inner">
+          <div class="main_content clearfix">
+            <div class="wiki_bodyContent" id="bodyContent">
+              <div id="mw-js-message" class="js-messagebox" style="display:none"></div>
+              <h1 id="firstHeading" class="firstHeading">API文档 V1</h1>
+              <div lang="zh-cn" dir="ltr" class="mw-content-ltr">
+                <div class="wiki_kit">
+                  <div class="wiki_taglist">
+                    <ul class="clearfix">
+                      <li><a href="#.E5.BE.AE.E5.8D.9A">Coaches</a></li>
+                      <li><a href="#.E8.AF.84.E8.AE.BA">Members</a></li>
+                      <li><a href="#.E7.94.A8.E6.88.B7">MemberHabits</a></li>
+                      <li><a href="#.E6.A4.A9.8D.45.B1">Events</a></li>
+                      <li><a href="#.E9.C4.D9.8E.A5.B1">Messages</a></li>
+                      <li><a href="#.E1.B4.C9.DE.B5.C1">Records</a></li>
+                      <li><a href="#.E2.C3.D2.AE.C5.B3">Photos</a></li>
+                      <li><a href="#.E3.C4.D5.A6.C7.B8">Assessments</a></li>
+                      <li><a href="#.E4.C5.D6.A7.C8.B9">Notices</a></li>
+                    </ul>
+                  </div>
+
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="wiki_table">
+                    <colgroup>
+                      <col class="tbF1"/>
+                      <col class="tbF2" />
+                      <col />
+                    </colgroup>
+                    <tr>
+                      <th colspan="3" scope="col"><span id=".E5.BE.AE.E5.8D.9A">Coaches</span></th>
+                    </tr>
+                    <tr>
+                      <td rowspan="4" style="text-align:center;">读取接口</td>
+                      <td><a href="coaches/info.html" title="coaches/info">api/v1/coaches/info</a></td>
+                      <td>获取当前教练信息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="coaches/id_info.html" title="coaches/id_info">api/v1/coaches/:id/info</a></td>
+                      <td>获取指定教练信息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="coaches/apply_list.html" title="coaches/apply_list">api/v1/coaches/apply_list</a></td>
+                      <td>获取请求关联会员列表</td>
+                    </tr>
+                    <tr>
+                      <td><a href="coaches/related_list.html" title="coaches/related_list">api/v1/coaches/related_list</a></td>
+                      <td>获取已关联会员列表</td>
+                    </tr>
+                    <tr>
+                      <td rowspan="13" style="text-align:center;">写入接口</td>
+                      <td><a href="coaches/register.html" title="coaches/register">api/v1/coaches/register</a></td>
+                      <td>创建新教练账户</td>
+                    </tr>
+                    <tr>
+                      <td><a href="coaches/login.html" title="coaches/login">api/v1/coaches/login</a></td>
+                      <td>教练登陆</td>
+                    </tr>
+                    <tr>
+                      <td><a href="coaches/logout.html" title="coaches/logout">api/v1/coaches/logout</a></td>
+                      <td>教练退出</td>
+                    </tr>
+                    <tr>
+                      <td><a href="coaches/update.html" title="coaches/update">api/v1/coaches/update</a></td>
+                      <td>新建/更新当前教练信息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="coaches/change_pwd.html" title="coaches/change_pwd">api/v1/coaches/change_pwd</a></td>
+                      <td>修改教练密码</td>
+                    </tr>
+                    <tr>
+                      <td><a href="coaches/approve_apply.html" title="coaches/approve_apply">api/v1/coaches/approve_apply</a></td>
+                      <td>批准会员关联请求</td>
+                    </tr>
+                    <tr>
+                      <td><a href="coaches/refuse_apply.html" title="coaches/refuse_apply">api/v1/coaches/refuse_apply</a></td>
+                      <td>拒绝会员关联请求</td>
+                    </tr>
+                    <tr>
+                      <td><a href="coaches/delete_member.html" title="coaches/delete_member">api/v1/coaches/delete_member</a></td>
+                      <td>取消会员关联</td>
+                    </tr>
+                    <tr>
+                      <td><a href="coaches/send_token.html" title="coaches/send_token">api/v1/coaches/send_token</a></td>
+                      <td>发送激活码</td>
+                    </tr>
+                    <tr>
+                      <td><a href="coaches/activate_account.html" title="coaches/activate_account">api/v1/coaches/activate_account</a></td>
+                      <td>激活账户</td>
+                    </tr>
+                    <tr>
+                      <td><a href="coaches/reset_password.html" title="coaches/reset_password">api/v1/coaches/reset_password</a></td>
+                      <td>重置密码</td>
+                    </tr>
+                    <tr>
+                      <td><a href="coaches/find_member.html" title="coaches/find_member">api/v1/coaches/find_member</a></td>
+                      <td>查找会员</td>
+                    </tr>
+                    <tr>
+                      <td><a href="coaches/apply_member.html" title="coaches/apply_member">api/v1/coaches/apply_member</a></td>
+                      <td>申请关联会员</td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="wiki_table">
+                    <colgroup>
+                      <col class="tbF1"/>
+                      <col class="tbF2" />
+                      <col />
+                    </colgroup>
+                    <tr>
+                      <th colspan="3" scope="col"><span id=".E8.AF.84.E8.AE.BA">Members</span></th>
+                    </tr>
+                    <tr>
+                      <td rowspan="4" style="text-align:center;">读取接口</td>
+                      <td><a href="members/info.html" title="members/info">api/v1/members/info</a></td>
+                      <td>获取当前会员信息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="members/id_info.html" title="members/id_info">api/v1/members/:id/info</a></td>
+                      <td>获取指定会员信息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="members/current_coach.html" title="members/current_coach">api/v1/members/current_coach</a></td>
+                      <td>获取会员关联教练信息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="members/apply_list.html" title="members/apply_list">api/v1/members/apply_list</a></td>
+                      <td>获取教练请求关联信息</td>
+                    </tr>
+                    <tr>
+                      <td rowspan="15" style="text-align:center;">写入接口</td>
+                      <td><a href="members/register.html" title="members/register">api/v1/members/register</a></td>
+                      <td>创建新会员账户</td>
+                    </tr>
+                    <tr>
+                      <td><a href="members/login.html" title="members/login">api/v1/members/login</a></td>
+                      <td>会员登陆</td>
+                    </tr>
+                    <tr>
+                      <td><a href="members/logout.html" title="members/logout">api/v1/members/logout</a></td>
+                      <td>会员退出</td>
+                    </tr>
+                    <tr>
+                      <td><a href="members/update.html" title="members/update">api/v1/members/update</a></td>
+                      <td>新建/更新当前会员信息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="members/change_pwd.html" title="members/change_pwd">api/v1/members/change_pwd</a></td>
+                      <td>修改会员密码</td>
+                    </tr>
+                    <tr>
+                      <td><a href="members/find_coach.html" title="members/find_coach">api/v1/members/find_coach</a></td>
+                      <td>会员查找教练</td>
+                    </tr>
+                    <tr>
+                      <td><a href="members/apply_coach.html" title="members/apply_coach">api/v1/members/apply_coach</a></td>
+                      <td>申请关联教练</td>
+                    </tr>
+                    <tr>
+                      <td><a href="members/delete_coach.html" title="members/delete_coach">api/v1/members/delete_coach</a></td>
+                      <td>取消教练关联</td>
+                    </tr>
+                    <tr>
+                      <td><a href="members/coach_info.html" title="members/coach_info">api/v1/members/coach_info</a></td>
+                      <td>获取指定教练信息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="members/grade_coach.html" title="members/grade_coach">api/v1/members/grade_coach</a></td>
+                      <td>给教练评分</td>
+                    </tr>
+                    <tr>
+                      <td><a href="members/send_token.html" title="members/send_token">api/v1/members/send_token</a></td>
+                      <td>发送激活码</td>
+                    </tr>
+                    <tr>
+                      <td><a href="members/activate_account.html" title="members/activate_account">api/v1/members/activate_account</a></td>
+                      <td>激活账户</td>
+                    </tr>
+                    <tr>
+                      <td><a href="members/reset_password.html" title="members/reset_password">api/v1/members/reset_password</a></td>
+                      <td>重置密码</td>
+                    </tr>
+                    <tr>
+                      <td><a href="members/approve_apply.html" title="members/approve_apply">api/v1/members/approve_apply</a></td>
+                      <td>批准教练关联请求</td>
+                    </tr>
+                    <tr>
+                      <td><a href="members/refuse_apply.html" title="members/refuse_apply">api/v1/members/refuse_apply</a></td>
+                      <td>拒绝教练关联请求</td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="wiki_table">
+                    <colgroup>
+                      <col class="tbF1"/>
+                      <col class="tbF2" />
+                      <col />
+                    </colgroup>
+                    <tr>
+                      <th colspan="3" scope="col"><span id=".E7.94.A8.E6.88.B7">MemberHabits</span></th>
+                    </tr>
+                    <tr>
+                      <td rowspan="1" style="text-align:center;">读取接口</td>
+                      <td><a href="memberhabits/habit.html" title="memberhabits/habit">api/v1/memberhabits/:id/habit</a></td>
+                      <td>获取当前用户健康习惯表</td>
+                    </tr>
+                    <tr>
+                      <td rowspan="3" style="text-align:center;">写入接口</td>
+                      <td><a href="memberhabits/create.html" title="memberhabits/create">api/v1/memberhabits/create</a></td>
+                      <td>创建用户健康习惯表</td>
+                    </tr>
+                    <tr>
+                      <td><a href="memberhabits/update.html" title="memberhabits/update">api/v1/memberhabits/update</a></td>
+                      <td>修改用户健康习惯表</td>
+                    </tr>
+                    <tr>
+                      <td><a href="memberhabits/delete.html" title="memberhabits/delete">api/v1/memberhabits/delete</a></td>
+                      <td>删除用户健康习惯表</td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="wiki_table">
+                    <colgroup>
+                      <col class="tbF1"/>
+                      <col class="tbF2" />
+                      <col />
+                    </colgroup>
+                    <tr>
+                      <th colspan="3" scope="col"><span id=".E6.A4.A9.8D.45.B1">Events</span></th>
+                    </tr>
+                    <tr>
+                      <td rowspan="17" style="text-align:center;">写入接口</td>
+                      <td><a href="events/coach_create.html" title="events/coach_create">api/v1/events/coach_create</a></td>
+                      <td>教练创建日程</td>
+                    </tr>
+                    <tr>
+                      <td><a href="events/member_create.html" title="events/member_create">api/v1/events/member_create</a></td>
+                      <td>会员创建日程</td>
+                    </tr>
+                    <tr>
+                      <td><a href="events/member_approve.html" title="events/member_approve">api/v1/events/member_approve</a></td>
+                      <td>会员同意日程</td>
+                    </tr>
+                    <tr>
+                      <td><a href="events/coach_approve.html" title="events/coach_approve">api/v1/events/coach_approve</a></td>
+                      <td>教练同意日程</td>
+                    </tr>
+                    <tr>
+                      <td><a href="events/coach_update.html" title="events/coach_update">api/v1/events/coach_update</a></td>
+                      <td>教练更新日程</td>
+                    </tr>
+                    <tr>
+                      <td><a href="events/member_update.html" title="events/member_update">api/v1/events/member_update</a></td>
+                      <td>会员更新日程</td>
+                    </tr>
+                    <tr>
+                      <td><a href="events/coach_delete.html" title="events/coach_delete">api/v1/events/coach_delete</a></td>
+                      <td>教练删除日程</td>
+                    </tr>
+                    <tr>
+                      <td><a href="events/member_delete.html" title="events/member_delete">api/v1/events/member_delete</a></td>
+                      <td>会员删除日程</td>
+                    </tr>
+                    <tr>
+                      <td><a href="events/member_refuse.html" title="events/member_refuse">api/v1/events/member_refuse</a></td>
+                      <td>会员拒绝日程</td>
+                    </tr>
+                    <tr>
+                      <td><a href="events/coach_refuse.html" title="events/coach_refuse">api/v1/events/coach_refuse</a></td>
+                      <td>教练拒绝日程</td>
+                    </tr>
+                    <tr>
+                      <td><a href="events/member_waiting_events.html" title="events/member_waiting_events">api/v1/events/member_waiting_events</a></td>
+                      <td>获取等待会员同意日程表</td>
+                    </tr>
+                    <tr>
+                      <td><a href="events/member_approved_events.html" title="events/member_approved_events">api/v1/events/member_approved_events</a></td>
+                      <td>获取会员已同意日程表</td>
+                    </tr>
+                    <tr>
+                      <td><a href="events/member_all_events.html" title="events/member_all_events">api/v1/events/member_all_events</a></td>
+                      <td>获取会员所有日程表</td>
+                    </tr>
+                    <tr>
+                      <td><a href="events/coach_waiting_events.html" title="events/coach_waiting_events">api/v1/events/coach_waiting_events</a></td>
+                      <td>获取教练已同意日程表</td>
+                    </tr>
+                    <tr>
+                      <td><a href="events/coach_approved_events.html" title="events/coach_approved_events">api/v1/events/coach_approved_events</a></td>
+                      <td>获取教练已同意日程表</td>
+                    </tr>
+                    <tr>
+                      <td><a href="events/coach_all_events.html" title="events/coach_all_events">api/v1/events/coach_all_events</a></td>
+                      <td>获取教练所有日程表</td>
+                    </tr>
+                    <tr>
+                      <td><a href="events/id.html" title="events/id">api/v1/events/:id</a></td>
+                      <td>获取日程</td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="wiki_table">
+                    <colgroup>
+                      <col class="tbF1"/>
+                      <col class="tbF2" />
+                      <col />
+                    </colgroup>
+                    <tr>
+                      <th colspan="3" scope="col"><span id=".E9.C4.D9.8E.A5.B1">Messages</span></th>
+                    </tr>
+                    <tr>
+                      <td rowspan="3" style="text-align:center;">读取接口</td>
+                      <td><a href="messages/coach_message.html" title="messages/coach_message">api/v1/messages/coach_message</a></td>
+                      <td>获取当前教练所有消息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="messages/member_message.html" title="messages/member_message">api/v1/messages/member_message</a></td>
+                      <td>获取当前会员所有消息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="messages/id.html" title="messages/id">api/v1/messages/:id</a></td>
+                      <td>获取某条消息</td>
+                    </tr>
+                    <tr>
+                      <td rowspan="8" style="text-align:center;">写入接口</td>
+                      <td><a href="messages/create.html" title="messages/create">api/v1/messages/create</a></td>
+                      <td>创建新消息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="messages/update.html" title="messages/update">api/v1/messages/update</a></td>
+                      <td>更新消息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="messages/coach_delete.html" title="messages/coach_delete">api/v1/messages/coach_delete</a></td>
+                      <td>教练删除消息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="messages/member_delete.html" title="messages/member_delete">api/v1/messages/member_delete</a></td>
+                      <td>会员删除消息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="messages/coach_member_messages.html" title="messages/coach_member_messages">api/v1/messages/coach_member_messages</a></td>
+                      <td>教练获取与某个会员的所有消息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="messages/member_coach_messages.html" title="messages/member_coach_messages">api/v1/messages/member_coach_messages</a></td>
+                      <td>会员获取与某个教练的所有消息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="messages/coach_delete_all.html" title="messages/coach_delete_all">api/v1/messages/coach_delete_all</a></td>
+                      <td>教练删除与某个会员的所有消息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="messages/member_delete_all.html" title="messages/member_delete_all">api/v1/messages/member_delete_all</a></td>
+                      <td>会员删除与某个教练的所有消息</td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="wiki_table">
+                    <colgroup>
+                      <col class="tbF1"/>
+                      <col class="tbF2" />
+                      <col />
+                    </colgroup>
+                    <tr>
+                      <th colspan="3" scope="col"><span id=".E1.B4.C9.DE.B5.C1">Records</span></th>
+                    </tr>
+                    <tr>
+                      <td rowspan="5" style="text-align:center;">写入接口</td>
+                      <td><a href="records/create.html" title="records/create">api/v1/records/create</a></td>
+                      <td>创建新运动记录</td>
+                    </tr>
+                    <tr>
+                      <td><a href="records/create_or_update_template.html" title="records/create_or_update_template">api/v1/records/create_or_update_template</a></td>
+                      <td>创建运动方案</td>
+                    </tr>
+                    <tr>
+                      <td><a href="records/all.html" title="records/all">api/v1/records/all</a></td>
+                      <td>获取某会员所有运动记录</td>
+                    </tr>
+                    <tr>
+                      <td><a href="records/delete.html" title="records/delete">api/v1/records/delete</a></td>
+                      <td>删除运动记录</td>
+                    </tr>
+                    <tr>
+                      <td><a href="records/template.html" title="records/template">api/v1/records/template</a></td>
+                      <td>获取运动模板</td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="wiki_table">
+                    <colgroup>
+                      <col class="tbF1"/>
+                      <col class="tbF2" />
+                      <col />
+                    </colgroup>
+                    <tr>
+                      <th colspan="3" scope="col"><span id=".E2.C3.D2.AE.C5.B3">Photos</span></th>
+                    </tr>
+                    <tr>
+                      <td rowspan="1" style="text-align:center;">读取接口</td>
+                      <td><a href="photos/id.html" title="photos/id">api/v1/photos/:id</a></td>
+                      <td>获取照片</td>
+                    </tr>
+                    <tr>
+                      <td rowspan="5" style="text-align:center;">写入接口</td>
+                      <td><a href="photos/upload.html" title="photos/upload">api/v1/photos/upload</a></td>
+                      <td>上传照片</td>
+                    </tr>
+                    <tr>
+                      <td><a href="photos/delete.html" title="photos/delete">api/v1/photos/delete</a></td>
+                      <td>删除照片</td>
+                    </tr>
+                    <tr>
+                      <td><a href="photos/update.html" title="photos/update">api/v1/photos/update</a></td>
+                      <td>更新照片</td>
+                    </tr>
+                    <tr>
+                      <td><a href="photos/member_photos.html" title="photos/member_photos">api/v1/photos/member_photos</a></td>
+                      <td>获取会员所有照片</td>
+                    </tr>
+                    <tr>
+                      <td><a href="photos/member_assessment_photos.html" title="photos/member_assessment_photos">api/v1/photos/member_assessment_photos</a></td>
+                      <td>获取会员所有评估照片</td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="wiki_table">
+                    <colgroup>
+                      <col class="tbF1"/>
+                      <col class="tbF2" />
+                      <col />
+                    </colgroup>
+                    <tr>
+                      <th colspan="3" scope="col"><span id=".E3.C4.D5.A6.C7.B8">Assessments</span></th>
+                    </tr>
+                    <tr>
+                      <td rowspan="1" style="text-align:center;">读取接口</td>
+                      <td><a href="assessments/id.html" title="assessments/id">api/v1/assessments/:id</a></td>
+                      <td>获取某次评估</td>
+                    </tr>
+                    <tr>
+                      <td rowspan="4" style="text-align:center;">写入接口</td>
+                      <td><a href="assessments/create.html" title="assessments/create">api/v1/assessments/create</a></td>
+                      <td>创建新评估</td>
+                    </tr>
+                    <tr>
+                      <td><a href="assessments/update.html" title="assessments/update">api/v1/assessments/update</a></td>
+                      <td>更新评估</td>
+                    </tr>
+                    <tr>
+                      <td><a href="assessments/delete.html" title="assessments/delete">api/v1/assessments/delete</a></td>
+                      <td>删除评估</td>
+                    </tr>
+                    <tr>
+                      <td><a href="assessments/all.html" title="assessments/all">api/v1/assessments/all</a></td>
+                      <td>获取某个会员的所有评估</td>
+                    </tr>
+                  </table>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="wiki_table">
+                    <colgroup>
+                      <col class="tbF1"/>
+                      <col class="tbF2" />
+                      <col />
+                    </colgroup>
+                    <tr>
+                      <th colspan="3" scope="col"><span id=".E4.C5.D6.A7.C8.B9">Notices</span></th>
+                    </tr>
+                    <tr>
+                      <td rowspan="3" style="text-align:center;">读取接口</td>
+                      <td><a href="notices/coach_notice.html" title="notices/coach_notice">api/v1/notices/coach_notice</a></td>
+                      <td>获取当前教练所有消息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="notices/member_notice.html" title="notices/member_notice">api/v1/notices/member_notice</a></td>
+                      <td>获取当前会员所有消息</td>
+                    </tr>
+                    <tr>
+                      <td><a href="notices/id.html" title="notices/id">api/v1/notices/:id</a></td>
+                      <td>获取某条消息</td>
+                    </tr>
+                    <tr>
+                      <td rowspan="5" style="text-align:center;">写入接口</td>
+                      <td><a href="notices/delete.html" title="notices/delete">api/v1/notices/delete</a></td>
+                      <td>删除通知</td>
+                    </tr>
+                    <tr>
+                      <td><a href="notices/delete_coach_all.html" title="notices/delete_coach_all">api/v1/notices/delete_coach_all</a></td>
+                      <td>删除当前教练所有通知</td>
+                    </tr>
+                    <tr>
+                      <td><a href="notices/delete_member_all.html" title="notices/delete_member_all">api/v1/notices/delete_member_all</a></td>
+                      <td>删除当前会员所有通知</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="wiki_plus_area"> 文档更新时间: 2014-10-28</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/主内容开始-->
+
+<!--统一底导结构-->
+    <div class="op_footer">
+      <div class="inner">
+        <p class="copyright W_textb">
+          <span>Copyright © 2014 51Lian</span>
+        </p>
+      </div>
+    </div>
+<!--/统一底导结构-->
+
+</body></html>

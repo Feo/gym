@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)http://open.weibo.com/wiki/2/statuses/public_timeline -->
+<html lang="zh-cn" dir="ltr" class="client-js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>records/all - 集中签发API</title>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../sources/wiki_main.css" media="screen" />
+</head>
+<body class="mediawiki ltr sitedir-ltr B_wiki_main  skin-monobook">
+
+<!--主内容开始-->
+<div class="wiki_wrap">
+  <div class="wiki_con">
+    <div class="con_box">
+      <div class="header noprint">
+        <img src="../sources/1.png">
+      </div>
+      <div class="wiki_body">
+        <div class="wiki_inner">
+            <div class="main_content clearfix">
+              <div class="wiki_bodyContent" id="bodyContent">
+                <div id="mw-js-message" class="js-messagebox" style="display:none"></div>
+                <h1 id="firstHeading" class="firstHeading">records/all</h1>
+                <div lang="zh-cn" dir="ltr" class="mw-content-ltr">
+                  <h2 class="wiki_title"> <span class="mw-headline" id="statuses.2Fpublic_timeline">records/all</span></h2>
+                  <p>删除运动记录</p>
+                  <h2 class="wiki_title"> <span class="mw-headline" id="URL">URL</span></h2>
+                  <p><span style="text-transform:lowercase;font-weight:600"><a rel="nofollow" class="external free" href="http://localhost:3000/api/v1/records/all">http://localhost:3000/api/v1/records/all</a></span></p>
+                  <h2 class="wiki_title"> <span class="mw-headline" id=".E6.94.AF.E6.8C.81.E6.A0.BC.E5.BC.8F">支持格式</span></h2>
+                  <p><span style="text-transform:uppercase;font-weight:600">JSON</span></p>
+                  <h2 class="wiki_title"> <span class="mw-headline" id="HTTP.E8.AF.B7.E6.B1.82.E6.96.B9.E5.BC.8F">HTTP请求方式</span></h2>
+                  <p><span style="text-transform:uppercase;font-weight:600">POST</span></p>
+                  <h2 class="wiki_title"> <span class="mw-headline" id=".E6.98.AF.E5.90.A6.E9.9C.80.E8.A6.81.E7.99.BB.E5.BD.95">是否需要登录</span></h2>
+                  <p><span style="text-transform:lowercase;font-weight:600">是</span><br></p>
+                  <h2 class="wiki_title"> <span class="mw-headline" id=".E8.AF.B7.E6.B1.82.E5.8F.82.E6.95.B0">请求参数</span></h2>
+                  <table border="1" cellspacing="0" cellpadding="0" width="100%" class="parameters" style="border-color: #CCCCCC;">
+                    <tbody>
+                      <tr>
+                        <th width="30%" style="text-align:center;font-weight:bolder;border:1px solid #cccccc">&nbsp;</th>
+                        <th width="10%" style="text-align:center;font-weight:bolder;border:1px solid #cccccc">必选</th>
+                        <th width="15%" style="text-align:center;font-weight:bolder;border:1px solid #cccccc">类型及范围</th>
+                        <th width="45%" style="text-align:center;font-weight:bolder;border:1px solid #cccccc">说明</th>
+                      </tr>
+                      <tr>
+                        <td style="text-align:center;font-weight:bolder;border:1px solid #cccccc">[id]</td>
+                        <td style="text-align:center;text-transform:lowercase;border:1px solid #cccccc">true</td>
+                        <td style="text-align:left;padding-left:5px;border:1px solid #cccccc">string</td>
+                        <td style="text-align:left;padding-left:5px;border:1px solid #cccccc">会员ID</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <h2 class="wiki_title"> <span class="mw-headline" id=".E6.B3.A8.E6.84.8F.E4.BA.8B.E9.A1.B9">注意事项</span></h2>
+                  <p>无</p>
+                  <h2 class="wiki_title"> <span class="mw-headline" id=".E8.BF.94.E5.9B.9E.E7.BB.93.E6.9E.9C">返回结果 </span></h2>
+                  <p><span style="text-transform:uppercase;font-weight:600">JSON示例</span><br></p>
+                  <pre>
+                    [
+                        [
+                            {
+                                "created_at": "2014-10-04T16:03:48+08:00",
+                                "id": 27,
+                                "member_id": 2,
+                                "submitter": "coach1",
+                                "template": false,
+                                "time": "20141004",
+                                "updated_at": "2014-10-04T16:03:48+08:00"
+                            },
+                            [
+                                {
+                                    "created_at": "2014-10-04T16:03:48+08:00",
+                                    "group_or_speed": "20",
+                                    "id": 70,
+                                    "kind": "0",
+                                    "name": "jump",
+                                    "record_id": 27,
+                                    "time_or_rate": "20",
+                                    "updated_at": "2014-10-04T16:03:48+08:00",
+                                    "weight_or_duration": "20"
+                                },
+                                {
+                                    "created_at": "2014-10-04T16:03:48+08:00",
+                                    "group_or_speed": "20",
+                                    "id": 71,
+                                    "kind": "0",
+                                    "name": "swimming",
+                                    "record_id": 27,
+                                    "time_or_rate": "20",
+                                    "updated_at": "2014-10-04T16:03:48+08:00",
+                                    "weight_or_duration": "20"
+                                },
+                                {
+                                    "created_at": "2014-10-04T16:03:48+08:00",
+                                    "group_or_speed": "20",
+                                    "id": 72,
+                                    "kind": "0",
+                                    "name": "ball",
+                                    "record_id": 27,
+                                    "time_or_rate": "20",
+                                    "updated_at": "2014-10-04T16:03:48+08:00",
+                                    "weight_or_duration": "20"
+                                }
+                            ]
+                        ],
+                        [
+                            {
+                                "created_at": "2014-10-04T16:03:49+08:00",
+                                "id": 28,
+                                "member_id": 2,
+                                "submitter": "coach1",
+                                "template": false,
+                                "time": "20141004",
+                                "updated_at": "2014-10-04T16:03:49+08:00"
+                            },
+                            [
+                                {
+                                    "created_at": "2014-10-04T16:03:49+08:00",
+                                    "group_or_speed": "20",
+                                    "id": 73,
+                                    "kind": "0",
+                                    "name": "jump",
+                                    "record_id": 28,
+                                    "time_or_rate": "20",
+                                    "updated_at": "2014-10-04T16:03:49+08:00",
+                                    "weight_or_duration": "20"
+                                },
+                                {
+                                    "created_at": "2014-10-04T16:03:49+08:00",
+                                    "group_or_speed": "20",
+                                    "id": 74,
+                                    "kind": "0",
+                                    "name": "swimming",
+                                    "record_id": 28,
+                                    "time_or_rate": "20",
+                                    "updated_at": "2014-10-04T16:03:49+08:00",
+                                    "weight_or_duration": "20"
+                                },
+                                {
+                                    "created_at": "2014-10-04T16:03:49+08:00",
+                                    "group_or_speed": "20",
+                                    "id": 75,
+                                    "kind": "0",
+                                    "name": "ball",
+                                    "record_id": 28,
+                                    "time_or_rate": "20",
+                                    "updated_at": "2014-10-04T16:03:49+08:00",
+                                    "weight_or_duration": "20"
+                                }
+                            ]
+                        ]
+                      ]
+                  </pre>
+                  <h2 class="wiki_title"> <span class="mw-headline" id=".E8.BF.94.E5.9B.9E.E5.AD.97.E6.AE.B5.E8.AF.B4.E6.98.8E">返回字段说明</span></h2>
+                  <table border="1" cellspacing="0" cellpadding="0" width="100%" class="parameters" style="border-color: #CCCCCC;">
+                    <tbody>
+                      <tr>
+                        <th width="25%" style="text-align:left;padding-left:5px;font-weight:bolder;border:1px solid #cccccc">返回值字段</th>
+                        <th width="15%" style="text-align:left;padding-left:5px;font-weight:bolder;border:1px solid #cccccc">字段类型</th>
+                        <th width="60%" style="text-align:left;padding-left:5px;font-weight:bolder;border:1px solid #cccccc">字段说明</th>
+                      </tr>
+                      <tr>
+                        <td style="text-align:left;padding-left:5px;font-weight:bolder;border:1px solid #cccccc">created_at</td>
+                        <td style="text-align:left;padding-left:5px;text-transform:lowercase;border:1px solid #cccccc">datetime</td>
+                        <td style="text-align:left;padding-left:5px;border:1px solid #cccccc">数据创建时间</td>
+                      </tr>
+                      <tr>
+                        <td style="text-align:left;padding-left:5px;font-weight:bolder;border:1px solid #cccccc">第一个id</td>
+                        <td style="text-align:left;padding-left:5px;text-transform:lowercase;border:1px solid #cccccc">integer</td>
+                        <td style="text-align:left;padding-left:5px;border:1px solid #cccccc">运动记录ID</td>
+                      </tr>
+                      <tr>
+                        <td style="text-align:left;padding-left:5px;font-weight:bolder;border:1px solid #cccccc">之后的id</td>
+                        <td style="text-align:left;padding-left:5px;text-transform:lowercase;border:1px solid #cccccc">integer</td>
+                        <td style="text-align:left;padding-left:5px;border:1px solid #cccccc">动作ID</td>
+                      </tr>
+                      <tr>
+                        <td style="text-align:left;padding-left:5px;font-weight:bolder;border:1px solid #cccccc">member_id</td>
+                        <td style="text-align:left;padding-left:5px;text-transform:lowercase;border:1px solid #cccccc">integer</td>
+                        <td style="text-align:left;padding-left:5px;border:1px solid #cccccc">会员ID</td>
+                      </tr>
+                      <tr>
+                        <td style="text-align:left;padding-left:5px;font-weight:bolder;border:1px solid #cccccc">submitter</td>
+                        <td style="text-align:left;padding-left:5px;text-transform:lowercase;border:1px solid #cccccc">string</td>
+                        <td style="text-align:left;padding-left:5px;border:1px solid #cccccc">提交人姓名</td>
+                      </tr>
+                      <tr>
+                        <td style="text-align:left;padding-left:5px;font-weight:bolder;border:1px solid #cccccc">template</td>
+                        <td style="text-align:left;padding-left:5px;text-transform:lowercase;border:1px solid #cccccc">boolean</td>
+                        <td style="text-align:left;padding-left:5px;border:1px solid #cccccc">是否为运动方案</td>
+                      </tr>
+                      <tr>
+                        <td style="text-align:left;padding-left:5px;font-weight:bolder;border:1px solid #cccccc">time</td>
+                        <td style="text-align:left;padding-left:5px;text-transform:lowercase;border:1px solid #cccccc">string</td>
+                        <td style="text-align:left;padding-left:5px;border:1px solid #cccccc">运动记录时间</td>
+                      </tr>
+                      <tr>
+                        <td style="text-align:left;padding-left:5px;font-weight:bolder;border:1px solid #cccccc">updated_at</td>
+                        <td style="text-align:left;padding-left:5px;text-transform:lowercase;border:1px solid #cccccc">datetime</td>
+                        <td style="text-align:left;padding-left:5px;border:1px solid #cccccc">数据更新时间</td>
+                      </tr>
+                      <tr>
+                        <td style="text-align:left;padding-left:5px;font-weight:bolder;border:1px solid #cccccc">group_or_speed</td>
+                        <td style="text-align:left;padding-left:5px;text-transform:lowercase;border:1px solid #cccccc">string</td>
+                        <td style="text-align:left;padding-left:5px;border:1px solid #cccccc">组数/速度</td>
+                      </tr>
+                      <tr>
+                        <td style="text-align:left;padding-left:5px;font-weight:bolder;border:1px solid #cccccc">kind</td>
+                        <td style="text-align:left;padding-left:5px;text-transform:lowercase;border:1px solid #cccccc">string</td>
+                        <td style="text-align:left;padding-left:5px;border:1px solid #cccccc">运动类型</td>
+                      </tr>
+                      <tr>
+                        <td style="text-align:left;padding-left:5px;font-weight:bolder;border:1px solid #cccccc">name</td>
+                        <td style="text-align:left;padding-left:5px;text-transform:lowercase;border:1px solid #cccccc">string</td>
+                        <td style="text-align:left;padding-left:5px;border:1px solid #cccccc">运动名称</td>
+                      </tr>
+                      <tr>
+                        <td style="text-align:left;padding-left:5px;font-weight:bolder;border:1px solid #cccccc">record_id</td>
+                        <td style="text-align:left;padding-left:5px;text-transform:lowercase;border:1px solid #cccccc">integer</td>
+                        <td style="text-align:left;padding-left:5px;border:1px solid #cccccc">运动记录ID</td>
+                      </tr>
+                      <tr>
+                        <td style="text-align:left;padding-left:5px;font-weight:bolder;border:1px solid #cccccc">time_or_rate</td>
+                        <td style="text-align:left;padding-left:5px;text-transform:lowercase;border:1px solid #cccccc">string</td>
+                        <td style="text-align:left;padding-left:5px;border:1px solid #cccccc">次数/心率</td>
+                      </tr>
+                      <tr>
+                        <td style="text-align:left;padding-left:5px;font-weight:bolder;border:1px solid #cccccc">weight_or_duration</td>
+                        <td style="text-align:left;padding-left:5px;text-transform:lowercase;border:1px solid #cccccc">string</td>
+                        <td style="text-align:left;padding-left:5px;border:1px solid #cccccc">重量/时长</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <h2 class="wiki_title"> <span class="mw-headline" id=".E5.85.B6.E4.BB.96">其他</span></h2>
+                  <p>无</p>
+                  <div class="wiki_plus_area"> 文档更新时间: 2014-10-06</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--/主内容开始-->
+
+<!--统一底导结构-->
+    <div class="op_footer">
+      <div class="inner">
+        <p class="copyright W_textb">
+          <span>Copyright © 2014 51Lian</span>
+        </p>
+      </div>
+    </div>
+<!--/统一底导结构-->
