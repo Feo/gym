@@ -122,7 +122,7 @@ module API
           var = current_member.phone
           @events1 = Event.where("member_phone like ? AND member_approved not like ? AND begin_date >= ? AND end_date <= ? AND whether_weekly = ?", "%#{var}%", "%#{var}%", params[:begin_date], params[:end_date], true)
           @events2 = Event.where("member_phone like ? AND member_approved not like ? AND date >= ? AND date <= ?", "%#{var}%", "%#{var}%", params[:begin_date], params[:end_date])
-          @events = Event.from("(#{@events1.to_sql} union #{@events2.to_sql}) as events").paginate(:page => params[:page], :per_page => params[:per_page])
+          @events = Event.from("(#{@events1.to_sql} union #{@events2.to_sql}) as events").order("week ASC").paginate(:page => params[:page], :per_page => params[:per_page])
           present [@events, :page => params[:page], :total_pages => @events.total_pages]
         end
 
@@ -131,7 +131,7 @@ module API
           var = current_member.phone
           @events1 = Event.where("member_phone like ? AND member_approved like ? AND begin_date >= ? AND end_date <= ? AND whether_weekly = ?", "%#{var}%", "%#{var}%", params[:begin_date], params[:end_date], true)
           @events2 = Event.where("member_phone like ? AND member_approved like ? AND date >= ? AND date <= ?", "%#{var}%", "%#{var}%", params[:begin_date], params[:end_date])
-          @events = Event.from("(#{@events1.to_sql} union #{@events2.to_sql}) as events").paginate(:page => params[:page], :per_page => params[:per_page])
+          @events = Event.from("(#{@events1.to_sql} union #{@events2.to_sql}) as events").order("week ASC").paginate(:page => params[:page], :per_page => params[:per_page])
           present [@events, :page => params[:page], :total_pages => @events.total_pages]
         end
 
@@ -140,7 +140,7 @@ module API
           var = current_member.phone
           @events1 = Event.where("member_phone like ? AND begin_date >= ? AND end_date <= ? AND whether_weekly = ?", "%#{var}%", params[:begin_date], params[:end_date], true)
           @events2 = Event.where("member_phone like ? AND date >= ? AND date <= ?", "%#{var}%", params[:begin_date], params[:end_date])
-          @events = Event.from("(#{@events1.to_sql} union #{@events2.to_sql}) as events").paginate(:page => params[:page], :per_page => params[:per_page])
+          @events = Event.from("(#{@events1.to_sql} union #{@events2.to_sql}) as events").order("week ASC").paginate(:page => params[:page], :per_page => params[:per_page])
           present [@events, :page => params[:page], :total_pages => @events.total_pages]
         end
 
@@ -345,7 +345,7 @@ module API
         post 'coach_waiting_events' do
           @events1 = Event.where("coach_id = ? AND  coach_approved = ? AND date >= ? AND date <= ?", current_coach.id, false, params[:begin_date], params[:end_date])
           @events2 = Event.where("coach_id = ? AND  coach_approved = ? AND begin_date >= ? AND end_date <= ? AND whether_weekly = ?", current_coach.id, false, params[:begin_date], params[:end_date], true)
-          @events = Event.from("(#{@events1.to_sql} union #{@events2.to_sql}) as events").paginate(:page => params[:page], :per_page => params[:per_page])
+          @events = Event.from("(#{@events1.to_sql} union #{@events2.to_sql}) as events").order("week ASC").paginate(:page => params[:page], :per_page => params[:per_page])
           present [@events, :page => params[:page], :total_pages => @events.total_pages]
         end
 
@@ -353,7 +353,7 @@ module API
         post 'coach_approved_events' do
           @events1 = Event.where("coach_id = ? AND  coach_approved = ? AND begin_date >= ? AND end_date <= ? AND whether_weekly = ?", current_coach.id, true, params[:begin_date], params[:end_date], true)
           @events2 = Event.where("coach_id = ? AND  coach_approved = ? AND date >= ? AND date <= ?", current_coach.id, true, params[:begin_date], params[:end_date])
-          @events = Event.from("(#{@events1.to_sql} union #{@events2.to_sql}) as events").paginate(:page => params[:page], :per_page => params[:per_page])
+          @events = Event.from("(#{@events1.to_sql} union #{@events2.to_sql}) as events").order("week ASC").paginate(:page => params[:page], :per_page => params[:per_page])
           present [@events, :page => params[:page], :total_pages => @events.total_pages]
         end
 
@@ -361,7 +361,7 @@ module API
         post 'coach_all_events' do
           @events1 = Event.where("coach_id = ? AND begin_date >= ? AND end_date <= ? AND whether_weekly = ?", current_coach.id, params[:begin_date], params[:end_date], true)
           @events2 = Event.where("coach_id = ? AND date >= ? AND date <= ?", current_coach.id, params[:begin_date], params[:end_date])
-          @events = Event.from("(#{@events1.to_sql} union #{@events2.to_sql}) as events").paginate(:page => params[:page], :per_page => params[:per_page])
+          @events = Event.from("(#{@events1.to_sql} union #{@events2.to_sql}) as events").order("week ASC").paginate(:page => params[:page], :per_page => params[:per_page])
           present [@events, :page => params[:page], :total_pages => @events.total_pages]
         end
 
