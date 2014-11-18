@@ -240,7 +240,7 @@ module API
             if !@coach
               error!({"error" => "教练ID错误。", "status" => "f" }, 400)
             end
-            phone = current_coach.phone + ";"
+            phone = @coach.phone + ";"
             @member.update_attributes(coach_id:nil,
                                                                 have_coach:false,
                                                                 grade:nil,
