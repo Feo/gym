@@ -16,7 +16,7 @@ module API
         get ':id/habit' do
           @habit = MemberHabit.find_by_member_id(params[:id])
           if !@habit
-            error!({"error" => "改会员生活健康习惯表不存在。", "status" => "f" }, 400)
+            error!({"error" => "该会员生活健康习惯表不存在。", "status" => "f" }, 400)
           else
             present @habit
           end
@@ -38,7 +38,7 @@ module API
         post 'update' do
           @habit = MemberHabit.find_by_member_id(current_member.id)
           if !@habit
-            error!({"error" => "改会员生活健康习惯表不存在。", "status" => "f" }, 400)
+            error!({"error" => "该会员生活健康习惯表不存在。", "status" => "f" }, 400)
           elsif @habit.update_attributes(params[:habit].except(:member_id))
             present @habit
           else
@@ -50,7 +50,7 @@ module API
         post 'delete' do
           @habit = MemberHabit.find_by_member_id(current_member.id)
           if !@habit
-            error!({"error" => "改会员生活健康习惯表不存在。", "status" => "f" }, 400)
+            error!({"error" => "该会员生活健康习惯表不存在。", "status" => "f" }, 400)
           elsif @habit.delete
             present @habit
           else
