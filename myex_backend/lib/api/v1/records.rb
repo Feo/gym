@@ -29,7 +29,7 @@ module API
               end
               @actions = Action.where("record_id = ?", @record.id)
               case score
-              when 0..2000
+              when 1..2000
                 level = "1"
               when 2000..4000
                 level = "2"

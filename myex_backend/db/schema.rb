@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141115130906) do
+ActiveRecord::Schema.define(:version => 20141117145149) do
 
   create_table "actions", :force => true do |t|
     t.string   "kind"
@@ -192,8 +192,8 @@ ActiveRecord::Schema.define(:version => 20141115130906) do
     t.float    "accuracy_grade",     :default => 0.0
     t.float    "appetency_grade",    :default => 0.0
     t.float    "professional_grade", :default => 0.0
-    t.string   "level",              :default => ""
-    t.integer  "score"
+    t.string   "level",              :default => "0"
+    t.integer  "score",              :default => 0
     t.text     "apply_coach"
   end
 

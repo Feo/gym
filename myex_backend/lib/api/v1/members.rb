@@ -240,7 +240,7 @@ module API
             if !@coach
               error!({"error" => "教练ID错误。", "status" => "f" }, 400)
             end
-            phone = current_coach.phone + ";"
+            phone = @coach.phone + ";"
             @member.update_attributes(coach_id:nil,
                                                                 have_coach:false,
                                                                 grade:nil,
@@ -366,6 +366,7 @@ module API
                                                             :send_description => send_description,
                                                             :time_to_live => I18n.t('.jpush.config.time_to_live'),
                                                             :platform => I18n.t('.jpush.config.platform'))
+            sign_in_member @member
             present @member
           else
             error!({"error" => "会员已关联教练。", "status" => "f" }, 400)
