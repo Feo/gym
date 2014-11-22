@@ -3,6 +3,9 @@ MyexBackend::Application.routes.draw do
   root :to => 'sessions#new'
   match '/login', :to => 'sessions#new'
   match '/logout', :to => 'sessions#destroy', :via => :delete
+  match '/login', :to => 'sessions#new'
+  match ':member_id/share_score', to: 'shares#share_score'
+  match ':member_id/share_record/:record_id', to: 'shares#share_record'
   resources :sessions do
     collection do
       get 'forget_password'

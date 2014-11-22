@@ -1,0 +1,122 @@
+@import 'common.scss';
+
+.top-bar {
+	background-color: $light-grey;
+	text-align: center;
+	padding: 15px 0;
+	position: relative;
+	margin-bottom: 10px;
+	border-bottom: 1px solid $grey;
+}
+.btn-back {
+	color: $blue;
+	position: absolute;
+	top: 18px;
+	left: 15px;
+	text-decoration: none;
+}
+.main {
+	text-align: center;
+}
+.inside-panel {
+	width: 90%;
+	display: inline-block;
+	margin-bottom: 15px;
+}
+.btn-new {
+	width: 100%;
+	border: 1px solid $grey;
+	background-color: $white;
+	padding: 8px 0;
+	font-size: 20px;
+	display: block;
+	color: $fontColor;
+	margin-bottom: 10px;
+	img {
+		opacity: .3;
+		vertical-align: middle;
+	}
+	span {
+		display: inline-block;
+		vertical-align: middle;
+	}
+}
+.container {
+	border: 1px solid $grey;
+	padding: 10px;
+}
+.user-info {
+	margin-bottom: 25px;
+}
+.show-board {
+	color: $cc;
+	h1 {
+		font-size: 58px;
+		font-weight: normal;
+		margin-bottom: 15px;
+	}
+}
+.details {
+	line-height: 160%;
+}
+.font-24 {
+	font-size: 24px;
+	padding-top: 5px;
+}
+.msg-alert {
+	color: $c3;
+	font-size: 24px;
+	padding-bottom: 20px;
+	padding-top: 25px;
+}
+.user-items {
+	float: left;
+	width: 50%;
+	ul {
+		padding-top: 5px;
+		list-style: none;
+		li {
+			margin-bottom: 5px;
+			color: $grey;
+		}
+	}
+}
+.scale-whole {
+	width: 100% !important;
+}
+.user-icon {
+	display: inline-block;
+	width: 45px;
+	height: 45px;
+	-webkit-border-radius: 25px;
+	overflow: hidden;
+	float: left;
+	margin-right: 5px;
+	img {
+		width: 45px;
+		height: 45px;
+	}
+}
+.record {
+	float: right;
+	width: 35%;
+	text-align: center;
+	padding: 5px 0;
+	line-height: 120%;
+	border: 1px solid $grey;
+	cursor: pointer;
+	color: $grey;
+}
+.foot-bar {
+	width: 90%;
+	display: inline-block;
+	button {
+		width: 47%;
+		border: 1px solid $grey;
+		background: none;
+		padding: 10px 0px;
+		font-size: 18px;
+		cursor: pointer;
+		color: $grey;
+	}
+}

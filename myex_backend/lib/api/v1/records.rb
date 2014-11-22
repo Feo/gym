@@ -44,6 +44,7 @@ module API
               else
                 level = "7"
               end
+              @record.update_attributes(score:score)
               member.update_attributes(score:score, level:level)
               if !current_member.nil?
                 sign_in_member member

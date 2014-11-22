@@ -1,0 +1,43 @@
+<div class="main">
+  <div class="inside-panel">
+    <a class="btn-new"><%= image_tag "new.png" %><span>您的新纪录已创建</span></a>
+    <div class="container">
+      <div class="user-info">
+        <div class="user-items">
+          <span class="user-icon">
+            <% if @photo.nil? %>
+              <%= image_tag "icon.jpg" %>
+            <% else %>
+              <%= image_tag @photo.image %>
+            <% end %>
+          </span>
+          <ul>
+            <li>用户昵称: <%= @nickname %></li>
+            <li>会员级别: <%= @member.level || 0 %>级</li>
+          </ul>
+        </div>
+        
+        <div class="clb"></div>
+      </div>
+      <div class="show-board">
+        <% if !@actions0.empty? %>
+          <h1>有氧运动</h1>
+          <% @actions0.each do |action0| %>
+          <p class="font-24"><%= action0.name %></p>
+          <% end %>
+        <% end %>
+        <% if !@actions1.empty? %>
+          <h1>无氧运动</h1>
+          <% @actions1.each do |action1| %>
+          <p class="font-24"><%= action1.name %></p>
+          <% end %>
+        <% end %>
+        <br />
+        <div class="details">
+          <%= @member.updated_at.strftime('%Y年%m月%d日 %H:%M') %><br />
+          <p class="msg-alert">您战胜了全国<%= @percent %>%的用户</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

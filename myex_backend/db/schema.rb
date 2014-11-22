@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141117145149) do
+ActiveRecord::Schema.define(:version => 20141122162201) do
 
   create_table "actions", :force => true do |t|
     t.string   "kind"
@@ -240,6 +240,7 @@ ActiveRecord::Schema.define(:version => 20141117145149) do
     t.integer  "member_id"
     t.datetime "created_at",                    :null => false
     t.datetime "updated_at",                    :null => false
+    t.integer  "score",      :default => 0
   end
 
 end

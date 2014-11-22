@@ -1,0 +1,30 @@
+<div class="main">
+  <div class="inside-panel">
+    <a class="btn-new"><%= image_tag "new.png" %> <span>您的新纪录已创建</span></a>
+    <div class="container">
+      <div class="user-info">
+        <div class="user-items">
+          <span class="user-icon">
+            <% if @photo.nil? %>
+              <%= image_tag "icon.jpg" %>
+            <% else %>
+              <%= image_tag @photo.image %>
+            <% end %>
+          </span>
+          <ul>
+            <li>用户昵称: <%= @nickname %></li>
+            <li>会员级别: <%= @member.level || 0 %>级</li>
+          </ul>
+        </div>
+        <div class="clb"></div>
+      </div>
+      <div class="show-board">
+        <h1><%= @member.score || 0 %>积分</h1>
+        <div class="details">
+          <%= @member.updated_at.strftime('%Y年%m月%d日 %H:%M') %><br />
+          <p class="msg-alert">您战胜了全国<%= @percent %>%的用户<br />全球排名升至<%= @ranking %>位</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
