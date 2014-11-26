@@ -24,8 +24,7 @@ module API
     end
 
     def current_member
-      #@current_member ||= Member.find_by_remember_token(cookies[:remember_token])
-      Member.last
+      @current_member ||= Member.find_by_remember_token(cookies[:remember_token])
     end
 
     def sign_in_member(member)
