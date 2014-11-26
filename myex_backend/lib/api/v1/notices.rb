@@ -54,13 +54,13 @@ module API
         end
 
         desc "Get current coach's all notices."
-        get 'coach_notice' do
-          @notices = Notice.where("coach_phone like ?", "%#{current_coach.phone}%")
+        post 'coach_notice' do
+          @notices = Notice.where("coach_phone like ? AND category = ?", "%#{current_coach.phone}%", params[:category])
         end
 
         desc "Get current member's all notices."
-        get 'member_notice' do
-          @notices = Notice.where("member_phone like ?", "%#{current_member.phone}%")
+        post 'member_notice' do
+          @notices = Notice.where("member_phone like ? AND category = ?", "%#{current_member.phone}%", params[:category])
         end
 
         desc "Delete current coach's all notice."
