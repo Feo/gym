@@ -346,7 +346,8 @@ module API
           @member = current_member
           @coach = Coach.find_by_id(params[:id])
           if !@member.have_coach
-            @member.update_attributes(have_coach:true, coach_id:@coach.id)
+            phone = @coach.phone + ";"
+            @member.update_attributes(have_coach:true, coach_id:@coach.id, apply_coach:@member.apply_coach.to_s.split(/#{phone}/).first)
             sendno = Time.now.to_i
             receiver_value = @coach.phone.to_s
             input = sendno.to_s + I18n.t('.jpush.config.receiver_type').to_s + receiver_value.to_s + I18n.t('.jpush.config.master_secret_coach').to_s
