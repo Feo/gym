@@ -58,6 +58,17 @@ module API
           end
         end
 
+        desc "Get  member habit table and assessment table."
+        post 'both_tables' do
+          @habit = MemberHabit.find_by_member_id(params[:member_id])
+          @assessment = Assessment.find_by_id(params[:assessment_id])
+          if !@habit || !@assessment
+            error!({"error" => "参数错误。", "status" => "f" }, 400)
+          else
+            present [@habit, @assessment]
+          end
+        end
+
       end
     end
   end
