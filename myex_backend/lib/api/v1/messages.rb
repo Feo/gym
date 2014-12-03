@@ -108,18 +108,18 @@ module API
 
         desc "Get a coach's all message."
         get 'coach_message' do
-          @messages = Message.where("coach_phone like ?", "%#{current_coach.phone}%")
+          @messages = Message.where("coach_phone like ?", "%#{current_coach.phone}%").order("created_at DESC")
         end
 
         desc "Get a member's all message."
         get 'member_message' do
-          @messages = Message.where("member_phone like ?", "%#{current_member.phone}%")
+          @messages = Message.where("member_phone like ?", "%#{current_member.phone}%").order("created_at DESC")
         end
 
         desc "Get current coach's all message with a member."
         post 'coach_member_messages' do
           if !params[:member_phone].empty?
-            @messages = Message.where("coach_phone like ? AND member_phone_array like ?", "%#{current_coach.phone}%", "%#{params[:member_phone]}%")
+            @messages = Message.where("coach_phone like ? AND member_phone_array like ?", "%#{current_coach.phone}%", "%#{params[:member_phone]}%").order("created_at DESC")
           else
             error!({"error" => "参数不能为空。", "status" => "f" }, 400)
           end
@@ -128,7 +128,7 @@ module API
         desc "Get current member's all message with a coach."
         post 'member_coach_messages' do
           if !params[:coach_phone].empty?
-            @messages = Message.where("coach_phone_array like ? AND member_phone like ?", "%#{params[:coach_phone]}%", "%#{current_member.phone}%")
+            @messages = Message.where("coach_phone_array like ? AND member_phone like ?", "%#{params[:coach_phone]}%", "%#{current_member.phone}%").order("created_at DESC")
           else
             error!({"error" => "参数不能为空。", "status" => "f" }, 400)
           end
