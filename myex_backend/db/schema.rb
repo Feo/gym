@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141122162201) do
+ActiveRecord::Schema.define(:version => 20141210135900) do
 
   create_table "actions", :force => true do |t|
     t.string   "kind"
@@ -143,6 +143,9 @@ ActiveRecord::Schema.define(:version => 20141122162201) do
     t.boolean  "friday",          :default => false
     t.boolean  "saturday",        :default => false
     t.boolean  "sunday",          :default => false
+    t.string   "photo_url"
+    t.string   "nickname"
+    t.string   "title"
   end
 
   create_table "member_habits", :force => true do |t|
@@ -206,6 +209,8 @@ ActiveRecord::Schema.define(:version => 20141122162201) do
     t.string   "member_phone_array", :default => ""
     t.string   "coach_phone_array",  :default => ""
     t.string   "submitter"
+    t.string   "photo_url"
+    t.string   "nickname"
   end
 
   create_table "notices", :force => true do |t|

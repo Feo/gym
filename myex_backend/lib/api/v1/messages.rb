@@ -18,11 +18,11 @@ module API
         post 'create' do
           @message = Message.new(params[:message])
           if !current_coach.nil?
-            submitter = current_coach.phone
+            submitter = current_coach
           elsif !current_member.nil?
-            submitter = current_member.phone
+            submitter = current_member
           end
-          @message.update_attributes(member_phone_array:params[:message][:member_phone], coach_phone_array:params[:message][:coach_phone], submitter:submitter)
+          @message.update_attributes(member_phone_array:params[:message][:member_phone], coach_phone_array:params[:message][:coach_phone], submitter:submitter.phone, photo_url:submitter.photo_url, nickname:submitter.nickname)
           if @message.save
             sendno = Time.now.to_i
             receiver_value_coach = params[:message][:coach_phone].gsub(/;/, ',')

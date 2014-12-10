@@ -19,7 +19,7 @@ module API
         post 'coach_create' do
           @event = Event.new(params[:event])
           @conflict = false
-          if @event.update_attributes(coach_id:current_coach.id, coach_approved:true, submitter:current_coach.phone)
+          if @event.update_attributes(coach_id:current_coach.id, coach_approved:true, submitter:current_coach.phone, photo_url:current_coach.photo_url, nickname:current_coach.nickname)
             if @event.whether_weekly
               if params[:event][:monday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND coach_id = ? AND monday = ?",true, @event.time, @event.end_date, @event.begin_date, current_coach.id, params[:event][:monday]).count > 1
                 @conflict = true
@@ -249,7 +249,7 @@ module API
           @conflict = false
           member_phone = params[:event][:member_phone] + current_member.phone + ";"
           phone = current_member.phone + ";"
-          if @event.update_attributes(member_phone:member_phone, member_approved:current_member.phone+";", submitter:current_member.phone)
+          if @event.update_attributes(member_phone:member_phone, member_approved:current_member.phone+";", submitter:current_member.phone, photo_url:current_member.photo_url, nickname:current_member.nickname)
             if @event.whether_weekly
               if params[:event][:monday] && Event.where("whether_weekly = ? AND time = ? and not begin_date >= ? and not end_date <= ? AND member_approved like ? AND monday = ?",true, @event.time, @event.end_date, @event.begin_date, "%#{phone}%", params[:event][:monday]).count > 1
                 @conflict = true
